@@ -166,6 +166,19 @@ io.on('connection', function(client) {
 io.to("product_"+p_id).emit("viewcount",{count:room.length});
 
       });
+var rooms={};
+client.on('joinDG', function(data) {
+        
+          var p_id=func.intval(data.p_id);
+       client.join("product_"+p_id);
+       if(typeof client.roomList == "undefined")
+        client.roomList=[];
+       client.roomList.push("product_"+p_id);
+        var room = io.sockets.adapter.rooms["product_"+p_id];
+io.to("product_"+p_id).emit("viewcount",{count:room.length});
+
+      });
+
 
       client.on('message', function(message) {
         
