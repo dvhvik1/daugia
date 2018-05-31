@@ -1,4 +1,4 @@
 @echo off
 
-node C:\daugia\web.js
+node web.js
 pause
