@@ -1,0 +1,50 @@
+<div class="view_box">
+<div class="product_view">
+<h1 class="p_title">{{product.name}}</h1>
+<div class="p_time">Ngày đăng : {{product.date}}</div>
+<div class="prd_group">
+<div class="prd_img">
+	<img src="{{product.img}}">
+</div>
+<div class="prd_info">
+<div class="prd_price">
+Giá tiền : <span class="prd_c_price">{{product.price}}</span>
+</div>
+
+
+<div class="prd_viewcount">
+Người tham gia : <span id=viewcount>1</span> người
+</div>
+
+
+</div>
+</div>
+<div class="prd_content">
+{{product.html}}
+</div>
+</div>
+</div>
+<style type="text/css">
+.product_view{
+	padding: 10px;
+}
+	.prd_img,.prd_info{
+		width: 49%;
+		display: inline-block;
+		vertical-align: top;
+	}
+	.prd_img img{
+		width: 100%;
+	}
+</style>
+<script type="text/javascript">
+	var p_id='{{product.id}}';
+	$(document).ready(function(){
+socket.on('connect', function (data) {
+    socket.emit('view', { p_id: '{{product.id}}' });
+});
+socket.on('viewcount', function(dtx){
+       $("#viewcount").html(dtx.count);
+});
+	});
+</script>

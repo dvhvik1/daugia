@@ -1,0 +1,11 @@
+<div class=posttinbox>
+<form action="/admin/menu" method="post" enctype="multipart/form-data">
+{{errText}}
+<input type=hidden name="doaction" value="1">
+name : <br><input type=text name="name" value="{{menu.name}}">
+<br>
+url : <br><input type=text name="url" value="{{menu.url}}">
+<br>
+<input type=submit name="ok" value="POST">
+</form>
+</div>

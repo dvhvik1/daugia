@@ -1,0 +1,12 @@
+<div class=posttinbox>
+<form action="/admin/category" method="post" enctype="multipart/form-data">
+{{msg.err}}
+<input type=hidden name="doaction" value="1">
+Tên nhóm sản phẩm : <br><input type=text name="name" value="1">
+<br>
+<input type=submit name="ok" value="ADD">
+</form>
+</div>
+<div>
+	{{categorylist}}
+</div>

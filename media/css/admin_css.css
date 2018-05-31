@@ -1,0 +1,142 @@
+html{
+  width: 100%;
+  height: 100%;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed; 
+   background-color: white;
+}
+body{
+    height: 100%;
+  margin: 0px;
+}
+.menu{
+background: rgba(1,1,1,0.5);
+-webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+.menu.active{
+  border-radius: 0px;
+  left: 0px;
+  width: 100%;
+  background: rgba(1,1,1,0.9);
+}
+
+.menu a{
+  display: inline-block;
+  color: #ffffff;
+  padding: 10px 10px;
+  text-decoration: none;
+  -webkit-transition: all 1s ease-in-out;
+  -moz-transition: all 1s ease-in-out;
+  -o-transition: all 1s ease-in-out;
+  transition: all 1s ease-in-out;
+  
+}
+.menu a:hover,.menu a.actL{
+  background: rgba(255,200,0,0.5);
+  cursor: pointer;
+  }
+  .main,.content{
+    min-height: 100%;
+  }
+  .content{
+    padding: 20px;
+  }
+.content1{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.content2{
+  position: relative;
+  width: 100%;
+  height: auto;
+  background: #fff;
+}
+*{
+  box-sizing: border-box;
+font-family: 'Quicksand', sans-serif;
+}
+.box_f1{
+   padding: 20px 10px;
+    display: inline-block;
+    vertical-align: middle;
+    background: rgba(1,1,1,0.3);
+    border: 5px solid #fff;
+    color: #fff;
+    text-align: center;
+    width: 320px;
+    height: 250px;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    top:0px;
+    left: 0px;
+    margin: auto;
+    box-shadow: 4px 3px 10px #111111;
+    text-shadow: 4px 3px 2px #111111;
+}
+.box_f1_thin{
+  font-size: 20px;
+  font-weight: 100;
+  padding-bottom: 5px;
+}
+.box_f1_h1{
+font-size: 20px;
+font-weight: bold;
+padding-bottom: 5px;
+}
+.box_f1_h2{
+font-size: 17px;
+}
+.box_f1_h3{
+  font-size: 13px;
+  font-weight: 100;
+  padding: 20px 0px;
+}
+.box_ct{
+margin:10px 1.5%;
+width: 30%; 
+padding: 20px;
+display: inline-block;
+vertical-align: top;
+}
+.box_ct_title{
+  font-size: 20px;
+}
+.box_ct_note{
+  padding-top: 10px;
+  font-size: 14px;
+  height:100px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+}
+.box_ct_read{
+  margin-top: 10px;
+  color: #fff;
+  background: #f57f20;
+  text-align: center;
+  padding: 5px;
+}
+.footer{
+  background: rgba(1,1,1,0.4);
+  color: #fff;
+}
+.footer .fcol{
+  display: inline-block;
+  vertical-align: top;
+  width: 16%;
+  height: 200px;
+  padding: 5px;
+}
+.footer .fcol.fc1{
+width: 33%;
+}
+p{
+  margin: 0px;
+  margin-bottom: 5px;
+}

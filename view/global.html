@@ -1,0 +1,39 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+
+<title>{{header.title}}</title>
+<script src="{{config.rooturl}}media/js/jquery.js"></script>
+
+<!--<link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700&amp;subset=latin-ext,vietnamese" rel="stylesheet">-->
+<link rel="stylesheet" type="text/css" href="{{config.rooturl}}media/css/main.css"/>
+<link rel="stylesheet" type="text/css" href="{{config.rooturl}}media/css/mobile-main.css"/>
+<link rel="stylesheet" type="text/css" href="{{config.rooturl}}media/css/fontawesome-all.min.css"/>
+<script src="{{config.rooturl}}socket.io/socket.io.js"></script>
+<script>
+var ROOT="{{config.rooturl}}";
+</script>
+<script src="{{config.rooturl}}media/js/main.js"></script>
+<base href="{{config.rooturl}}">
+
+{{header.add}}
+</head>
+<body>
+
+<div class=main>
+{{main.menu}}
+<div class="content">
+{{main.content}}
+</div>
+</div>
+
+
+<div class=footer>
+	<div class="fcol fc1"><img src="{{config.rooturl}}media/image/logo/1.png"><br>© 2017 Vikclass Development.</div>
+	<div class="fcol"></div><div class="fcol"></div><div class="fcol"></div><div class="fcol"></div>
+</div>
+</body>
+</html>
