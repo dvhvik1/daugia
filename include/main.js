@@ -14,7 +14,7 @@ menu="<div class=menu>"+
 "<div class=wrapper><a class='logo m_child' href='./'><i class='fa fa-gavel x_flip'></i> DEMO</a>"+
 "<div class=r_menu><a class='m_child' href='./cart'><i class='fa fa-shopping-cart'></i> Giỏ hàng</a>"+
 "<a class='m_child' href='./auction/my'><i class='fa fa-gavel x_flip'></i> Đấu giá của tôi</a>"+
-"<a class='m_child' href='./login'><i class='fa fa-user'></i> Đăng nhập</a></div>"+
+"<a class='m_child login_box' href='#'><i class='fa fa-user'></i> Đăng nhập</a></div>"+
 "</div></div>";
 HTML.main.menu=menu;
 console.log("run file:",'module/'+req.module+'/'+req.module+'.js');

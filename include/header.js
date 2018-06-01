@@ -1,3 +1,3 @@
-HTML.header.title="hello ejs";
+HTML.header.title="DEMO";
 HTML.header.add="";
 endHeader(false,"ok");

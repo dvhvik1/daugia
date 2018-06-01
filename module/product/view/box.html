@@ -3,9 +3,14 @@
 		<img src="{{product.img}}">
 	</div>
 	<div class=prd_price>
-		Giá tiền : <span class="prd_c_price">{{product.price}}</span>
+		<i class='fa fa-money-bill'></i> <span class="prd_c_price">{{product.price}}</span>
 	</div>
 	<div class=prd_time>
-		00:00:00
+		<i class='fa fa-clock'></i> <span class="prd_c_time">00:00:00</span>
+	</div>
+	<div class=prd_btnb>
+		<a class=prd_btn_daugia href="./product/{{product.id}}">
+		Đấu giá
+		</a>
 	</div>
 </div>

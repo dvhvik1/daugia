@@ -38,10 +38,10 @@ Người tham gia : <span id=viewcount>1</span> người
 	}
 </style>
 <script type="text/javascript">
-	var p_id='{{product.id}}';
+	var p_id='1';
 	$(document).ready(function(){
 socket.on('connect', function (data) {
-    socket.emit('view', { p_id: '{{product.id}}' });
+    socket.emit('view', { p_id: p_id });
 });
 socket.on('viewcount', function(dtx){
        $("#viewcount").html(dtx.count);

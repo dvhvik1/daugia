@@ -5,6 +5,9 @@ var productSchema = mongoose.Schema({
     required:true,
     unique:true
   },
+  category : [{
+    id : Number
+     }],
   des: {
     type:String,
     required:true
@@ -31,6 +34,10 @@ var productSchema = mongoose.Schema({
   }
   ,
     u_time:{
+    type:Number,
+    default: 0
+  }, 
+  quantity:{
     type:Number,
     default: 0
   },

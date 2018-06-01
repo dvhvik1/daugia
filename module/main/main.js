@@ -9,16 +9,15 @@ DB_product.find({},function(err,data){
 	if(data.length>0){
 		for (var i = 0; i < data.length; i++) {
 			ndt=data[i];
-			console.log(data[i]);
 	ndt.date=func.timeToString(ndt.time);
 	ndt.price=func.toVnd(ndt.price);
-	var product_box2=product_box2;
+	var product_box2=product_box;
 	
 	product_list+=func.templ(product_box2,{product:ndt});
 		}
 	
 	}
-	
+	console.log(product_list);
 HTML.main.content=func.templ(HTML.main.content,{"data":{"product_list":product_list}});
 endMain(false,"ok");
 });

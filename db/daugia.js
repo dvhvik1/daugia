@@ -10,7 +10,7 @@ var daugiaSchema = mongoose.Schema({
     type:Number,
     required:true
   },
-  ph_id:{
+  phien_id:{
     type:Number,
     default:0
   },

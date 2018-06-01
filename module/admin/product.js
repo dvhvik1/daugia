@@ -1,17 +1,34 @@
 HTML.main.content=fs.readFileSync('module/'+req.module+'/view/'+req.act+'.html')+'';
-var ndt={name:"",des:"",tag:"",html:"",img:""};
+var ndt={name:"",des:"",tag:"",html:"",img:"",catelist:"123"};
 var product=ndt;
 var errText="";
 var waitupload=false;
 console.log("===files",req.files);
+var catelist="";
+
+DB_category.find({},function(err,category){
+	if(category.length>0){
+		
+	for (var i = 0; i < category.length; i++) {
+		catelist+="<option value='"+category[i].id+"'>"+category[i].name+"</option>";
+	}
+	}
+	else
+	{
+	}
+ndt.catelist=catelist;
+console.log(ndt.catelist);
 if(req.body.doaction=="1"){
 ndt=req.body;
+ndt.catelist=catelist;
 product.name=func.removeHtmlTag(func.removeSpcChar(req.body.name));
 product.des=func.removeHtmlTag(func.removeSpcChar(req.body.des));
 product.tag=func.removeHtmlTag(func.removeSpcChar(req.body.tag));
 product.html=func.safeHtml(req.body.html);
 product.price=func.intval(req.body.price);
 product.min_price=func.intval(req.body.min_price);
+product.category=[{id:func.intval(req.body.category)}];
+product.quantity=func.intval(req.body.quantity);
 if(product.price==0)
 {
 errText+="Giá sản phẩm không được để trống<br>";
@@ -53,7 +70,7 @@ product.time=func.getTime();
 product.url=func.makeUrl(product.name);
 
 
-var productsave = new DB_product({ name: product.name,des:product.des,img:product.img,tag:product.tag,price:product.price,min_price:product.min_price,html:product.html,time:product.time,url:product.url });
+var productsave = new DB_product({ name: product.name,des:product.des,img:product.img,tag:product.tag,price:product.price,min_price:product.min_price,html:product.html,time:product.time,url:product.url,category:product.category,quantity:product.quantity });
 productsave.save(function (err, user1) {
 	HTML.main.content=func.tmp("Đăng sản phẩm thành công !!<br>","msg.err",HTML.main.content);
 HTML.main.content=func.temp(HTML.main.content,ndt);
@@ -78,7 +95,7 @@ product.img='media/product/noimg.jpg';
 product.tag=product.tag.split(",");
 product.time=func.getTime();
 product.url=func.makeUrl(product.name);
-var productsave = new DB_product({ name: product.name,des:product.des,img:product.img,tag:product.tag,price:product.price,min_price:product.min_price,html:product.html,time:product.time,url:product.url });
+var productsave = new DB_product({ name: product.name,des:product.des,img:product.img,tag:product.tag,price:product.price,min_price:product.min_price,html:product.html,time:product.time,url:product.url,category:product.category,quantity:product.quantity });
 productsave.save(function (err, user1) {
 	HTML.main.content=func.tmp("Đăng sản phẩm thành công !!<br>","msg.err",HTML.main.content);
 HTML.main.content=func.temp(HTML.main.content,ndt);
@@ -101,3 +118,4 @@ HTML.main.content=func.tmp(errText,"msg.err",HTML.main.content);
 HTML.main.content=func.temp(HTML.main.content,ndt);
 endMain(false,"ok");
 }
+});

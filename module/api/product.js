@@ -1,0 +1,25 @@
+if(req.act=="getlist")
+{
+DB_product.find({},function(err,data){
+	if(data.length>0){
+	res.send(JSON.stringify(data));
+	}
+	else
+	{
+		res.send("[]");
+	}
+});
+}
+
+if(req.act=="getdaugia")
+{
+DB_product.find({},function(err,data){
+	if(data.length>0){
+	res.send(JSON.stringify(data));
+	}
+	else
+	{
+		res.send("[]");
+	}
+});
+}

@@ -28,9 +28,9 @@ eval(fs.readFileSync('db/menu.js')+'');
 eval(fs.readFileSync('db/post.js')+'');
 eval(fs.readFileSync('db/seo.js')+'');
 eval(fs.readFileSync('db/product.js')+'');
-
-
-
+eval(fs.readFileSync('db/category.js')+'');
+eval(fs.readFileSync('db/phien.js')+'');
+eval(fs.readFileSync('db/daugia.js')+'');
 
 
 var db = mongoose.connection;
@@ -103,9 +103,9 @@ io.use(function(socket, next) {
 app.use(session_config);
 app.use(fileUpload());
 console.log(func.getTime()+"------"+func.timeToString(func.getTime())+"---"+func.rand(1,100));
-
-
-
+app.use("/api",function(req, res){
+eval(fs.readFileSync('include/api.js')+'');
+});
 app.use(function(req, res){
 var HTML=new cHTML();
 HTML.html=fs.readFileSync('view/global.html','utf-8')+'';
