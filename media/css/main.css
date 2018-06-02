@@ -16,6 +16,11 @@ body{
   position: fixed;
   background: #fff;
 }
+.lg_logout{
+  text-align: right;
+  cursor: pointer;
+  padding:10px;
+}
 .lg_title{
   padding: 5px 10px;
   border-radius: 4px;
@@ -32,6 +37,9 @@ body{
   width: 100%;
   border-radius: 4px;
 }
+.login_box,.logu_box{
+  cursor: pointer;
+}
 .lg_login{
   padding: 5px 10px;
   border-radius: 4px;
@@ -39,6 +47,7 @@ body{
   color: #fff;
   display: inline-block;
   margin:0px auto;
+  cursor: pointer;
 }
 .prd_item{
   padding: 10px;
@@ -258,6 +267,9 @@ vertical-align: top;
   height:100px;
   overflow: hidden;
   text-overflow:ellipsis;
+}
+.m_child{
+  color: #fff;
 }
 .box_ct_read{
   margin-top: 10px;

@@ -10,6 +10,19 @@ DB_phien.find({},function(err,data){
 	}
 });
 }
+
+if(req.act=="settime" )
+{
+
+DB_phien.update({}, {time:func.getTime(),endtime:(func.getTime()+60000),run:1}, {multi:true}, function(err, doc){
+    if (err) res.send('{"sys":"false"}');
+    else
+    res.send('{"sys":"true"}');
+});
+
+
+}
+
 if(req.act=="getFormProduct")
 {
 	//console.log(req.urlmap);

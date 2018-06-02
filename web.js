@@ -22,6 +22,18 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://daugia:123456@ds237770.mlab.com:37770/daugia', { useMongoClient: true });
 mongoose.Promise = global.Promise;
 
+mongoose.Types.ObjectId.isValid
+
+func.objid=function(str){
+  if(mongoose.Types.ObjectId.isValid(str))
+  {
+    return str;
+  }
+  else
+  {
+    return "";
+  }
+}
 eval(fs.readFileSync('db/counter.js')+'');
 eval(fs.readFileSync('db/user.js')+'');
 eval(fs.readFileSync('db/menu.js')+'');
@@ -32,13 +44,70 @@ eval(fs.readFileSync('db/category.js')+'');
 eval(fs.readFileSync('db/phien.js')+'');
 eval(fs.readFileSync('db/daugia.js')+'');
 
-
+var phiens={};
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("loaded DATA");
+
+DB_user.update({}, {onl: 0}, {multi: true}, function(err) {  });
+function phien_process(phien){
+console.log("phien "+phien.id+" end");
+DB_product.find({id:phien.p_id}).exec(function(err,product){
+  if(product.length>0){
+if(product[0].quantity>0 )
+    {
+  var phiendf={p_id:product[0].id,price:product[0].min_price,time:func.getTime(),endtime:(func.getTime()+60000)};
+  var add_phien=DB_phien(phiendf);
+  add_phien.save(function(err,aphien){
+    if(err!=null)
+    {
+     
+    }
+    else
+    {
+   
+  }
+
+  });
+    }
+  
+
+}
+});
+
+}
+function phienSetEndTime(phien){
+var endt=func.getTime()-phien.endtime;
+phiens['phien_'+phien.id]=setTimeout(phien_process(phien),endtime);
+}
+function checkphien(phien){
+if(phien.endtime>func.getTime())
+{
+phien_process(phien);
+}
+else
+{
+phienSetEndTime(phien);
+}
+
+}
+
+var time=func.getTime();
+DB_phien.find({run:1},function(err,phien){
+  if(phien.length>0){
+  for (var i = 0; i < phien.length; i++) {
+    checkphien(phien[i]);
+  }
+
+  }
+});
+
+
+
+
+
   /*
-//user.update({}, {onl: 0}, {multi: true}, function(err) {  });
 var user1 = new DB_user({ name: "admin",pass:"admin",socket:"21321321" });
 user1.save(function (err, user1) {
 });
@@ -91,13 +160,16 @@ res.status(404).end('Not found');
 app.use(cookieParser);
 
 io.use(function(socket, next) {
-    var req = socket.handshake;
+    /*var req = socket.handshake;
     var res = {};
+    session_config(req, res, next);
     cookieParser(req, res, function(err) {
       //console.log("========================================== 222",req.signedCookies);
         if (err) return next(err);
         session_config(req, res, next);
     });
+    */
+    session_config(socket.request, socket.request.res, next);
 });
 
 app.use(session_config);
@@ -153,7 +225,11 @@ async.parallel([function(endFirst){
 
 
 io.on('connection', function(client) {
-
+if(func.intval(client.request.session.u_id)>0)
+{
+  client.u_id=func.intval(client.request.session.u_id);
+  client.u_name=func.stringval(client.request.session.u_name);
+}
 //eval(fs.readFileSync('socket_module/onconnect.js')+'');
   client.on('view', function(data) {
         
@@ -167,21 +243,50 @@ io.to("product_"+p_id).emit("viewcount",{count:room.length});
 
       });
 var rooms={};
-client.on('joinDG', function(data) {
+
+client.on('DG', function(data) {
         
           var p_id=func.intval(data.p_id);
+          var phien_id=func.intval(data.phien_id);
+          var price=func.intval(data.price);
        client.join("product_"+p_id);
        if(typeof client.roomList == "undefined")
         client.roomList=[];
        client.roomList.push("product_"+p_id);
-        var room = io.sockets.adapter.rooms["product_"+p_id];
-io.to("product_"+p_id).emit("viewcount",{count:room.length});
 
+DB_phien.find({id:phien_id,p_id:p_id},function(err,phien){
+  if(phien.length>0){
+    if(func.intval(client.u_id)>0 && phien[0].endtime>func.getTime() && price>=(phien[0].price+1000)){
+      var endtime=func.getTime();
+      var time=func.getTime();
+var newDG={
+  u_id: client.u_id,
+  u_name: client.u_name,
+  p_id: p_id,
+  phien_id:phien_id,
+  price:price,
+  time:time
+}
+  var addDG=DB_daugia(newDG);
+  var update_phien={price:price,time:time,endtime:(time+60000)};
+  addDG.save(function(err,aphien){
+    if(err!=null)
+    {
+      DB_phien.findOneAndUpdate({ id: phien_id }, update_phien, {upsert:true}, function(err, doc){
+    io.to("product_"+p_id).emit("DG",{price:price,endtime:endtime,time:time,u_name:client.u_name,u_id:client.u_id});
+});
+    }
+
+  });
+
+}
+  
+  }
+});
       });
 
-
       client.on('message', function(message) {
-        
+        console.log(client.request.session);
         //if (message.email === session.email)
         {
        io.sockets.emit("hello",{hihi:"ihihi"});

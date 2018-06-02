@@ -17,7 +17,6 @@ DB_product.find({},function(err,data){
 		}
 	
 	}
-	console.log(product_list);
 HTML.main.content=func.templ(HTML.main.content,{"data":{"product_list":product_list}});
 endMain(false,"ok");
 });

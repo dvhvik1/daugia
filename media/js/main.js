@@ -28,10 +28,47 @@ $(window).scroll(function(){
 });
 
 $(document).on("click",".login_box",function(){
-
     $(".lg_bm").remove();
     $("body").append("<div class=lg_bm><div class=lg_title>Đăng nhập</div><div class=lg_row>Tên tài khoản:<br><input type=text name=user class=lg_inp></div><div class=lg_row>Mật khẩu:<br><input type=password name=pass class=lg_inp></div><div class=lg_row><div class=lg_login>Đăng nhập</div></div></div>");
 $(".lg_bm").css({top:$(".menu").outerHeight(),left:$(this).offset().left-$(".lg_bm").outerWidth()+$(this).outerWidth()});
 });
+$(document).on("click",".logu_box",function(){
+    $(".lg_bm").remove();
+    $("body").append("<div class=lg_bm><div class=lg_logout>Đăng xuất</div></div>");
+$(".lg_bm").css({top:$(".menu").outerHeight(),left:$(this).offset().left-$(".lg_bm").outerWidth()+$(this).outerWidth()});
+});
+$(document).on("click",".lg_login",function(){
+$.post( "api/user/login", { name: $(".lg_inp[name='user']").val(), pass: $(".lg_inp[name='pass']").val() })
+  .done(function( data ) {
+    var jsdata=JSON.parse(data);
+    if(jsdata.sys=="false")
+    {
+        alert("Sai tên đăng nhập hoạc mật khẩu !");
+    }
+    else
+    {
+        location.reload();
+    }
+  });
+
+});
+
+$(document).on("click",".lg_logout",function(){
+$.post( "api/user/logout", {})
+  .done(function( data ) {
+    var jsdata=JSON.parse(data);
+    if(jsdata.sys=="false")
+    {
+        alert("Chưa đăng nhập !");
+    }
+    else
+    {
+        location.reload();
+    }
+  });
+
+});
+
+
 
 });

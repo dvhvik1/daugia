@@ -5,14 +5,29 @@ var name=func.removeHtmlTag(func.removeSpcChar(func.stringval(req.body.name)));
 var pass=func.removeHtmlTag(func.removeSpcChar(func.stringval(req.body.pass)));
 DB_user.find({name:name,pass:pass},function(err,data){
 	if(data.length>0){
-	req.session.u_id=data.id;
-	res.send('{"sys":"true","u_id":'+data.id+'}');
+	req.session.u_id=data[0].id;
+	req.session.u_name=data[0].name;
+	req.session.save();
+	res.send('{"sys":"true","u_id":'+data[0].id+'}');
 	}
 	else
 	{
 		res.send('{"sys":"false","err":"pass"}');
 	}
 });
+}
+else
+{
+	res.send('{"sys":"false","err":"null"}');
+}
+}
+if(req.act=="logout")
+{
+if(func.intval(req.session.u_id)>0){
+	req.session.u_id=0;
+	req.session.u_name="";
+	req.session.save();
+	res.send('{"sys":"true","err":"null"}');
 }
 else
 {

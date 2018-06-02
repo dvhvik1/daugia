@@ -15,6 +15,10 @@ var phienSchema = mongoose.Schema({
   endtime:{
     type:Number,
     default: 0
+  },
+  run:{
+    type:Number,
+    default: 1
   }
 });
 

@@ -13,13 +13,35 @@ DB_product.find({},function(err,data){
 
 if(req.act=="getdaugia")
 {
-DB_product.find({},function(err,data){
-	if(data.length>0){
-	res.send(JSON.stringify(data));
+	try{
+DB_product.aggregate([{
+    $lookup: {
+        from: "phiens",
+        localField: "id",
+        foreignField: "p_id",
+        as: "phien_doc"
+    }
+}
+,
+
+{$lookup: {
+        from: "daugias",
+        localField: "id",
+        foreignField: "phien_id",
+        as: "daugia_doc"
+    }
+}
+]).exec(function(err, product) {
+    if(product.length>0){
+	res.send(JSON.stringify(product));
 	}
 	else
 	{
 		res.send("[]");
 	}
 });
+}
+catch(errx){
+console.log("loi");
+}
 }
