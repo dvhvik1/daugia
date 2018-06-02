@@ -69,6 +69,21 @@ $.post( "api/user/logout", {})
 
 });
 
+setInterval(function(){
+$(".prd_timecount").each(function(){
+    var endtime=parseFloat($(this).attr("endtime"));
+    var ctime=parseInt((endtime-serverTime)/1000);
+    $(this).html(ctime);
+});
+},1000);
+
+
+
+
+
+
+
+
 
 
 });

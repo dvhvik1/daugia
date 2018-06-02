@@ -22,7 +22,17 @@ DB_phien.update({}, {time:func.getTime(),endtime:(func.getTime()+60000),run:1}, 
 
 
 }
+if(req.act=="removeall" )
+{
 
+DB_phien.deleteMany({}, function(err, doc){
+    if (err) res.send('{"sys":"false"}');
+    else
+    res.send('{"sys":"true"}');
+});
+
+
+}
 if(req.act=="getFormProduct")
 {
 	//console.log(req.urlmap);
@@ -42,13 +52,18 @@ DB_phien.find({p_id:id},function(err,phien){
 	var phiendf={p_id:product[0].id,price:product[0].min_price,time:func.getTime(),endtime:(func.getTime()+60000)};
 	var add_phien=DB_phien(phiendf);
 	add_phien.save(function(err,aphien){
-		if(err!=null)
+		if(!err)
 		{
-			res.send('{"sys":"false","err":"'+err.errmsg+'"}');
-		}
-		else
-		{
+			console.log("tao phien : ",aphien);
+			phiens['phien_'+aphien.id]=setTimeout(function(){func.phien_process(aphien)},(aphien.endtime-aphien.time));
+     io.to("product_"+product[0].id).emit("updatephien",{aphien});
 		res.send(JSON.stringify(aphien));
+	}
+	else
+	{
+		
+			res.send('{"sys":"false","err":"'+err.errmsg+'"}');
+		
 	}
 
 	});

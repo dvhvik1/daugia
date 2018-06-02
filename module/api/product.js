@@ -13,8 +13,14 @@ DB_product.find({},function(err,data){
 
 if(req.act=="getdaugia")
 {
+	var match={};
+	var id=func.intval(req.urlmap[4]);
+if(id>0)
+{
+	match={id:id};
+}
 	try{
-DB_product.aggregate([{
+DB_product.aggregate([{$match:match},{
     $lookup: {
         from: "phiens",
         localField: "id",

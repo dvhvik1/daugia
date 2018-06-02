@@ -51,18 +51,27 @@ db.once('open', function() {
   console.log("loaded DATA");
 
 DB_user.update({}, {onl: 0}, {multi: true}, function(err) {  });
-function phien_process(phien){
+func.phien_process=function(phien){
 console.log("phien "+phien.id+" end");
+DB_phien.update({id:phien.id}, {run: 0}, {multi: true}, function(err) {  });
 DB_product.find({id:phien.p_id}).exec(function(err,product){
   if(product.length>0){
 if(product[0].quantity>0 )
     {
-  var phiendf={p_id:product[0].id,price:product[0].min_price,time:func.getTime(),endtime:(func.getTime()+60000)};
+  
+
+
+DB_daugia.find({phien_id:phien.id}).exec(function(err,daugia){
+    if(daugia.length>0){
+      var phiendf={p_id:product[0].id,price:product[0].min_price,time:func.getTime(),endtime:(func.getTime()+60000)};
   var add_phien=DB_phien(phiendf);
   add_phien.save(function(err,aphien){
-    if(err!=null)
+    if(!err)
     {
-     
+ console.log("phien "+phien.id+" new");
+    clearTimeout(phiens['phien_'+aphien.id]);
+    phiens['phien_'+aphien.id]=setTimeout(function(){func.phien_process(aphien)},(aphien.endtime-aphien.time));
+     io.to("product_"+product[0].id).emit("updatephien",{aphien});
     }
     else
     {
@@ -70,6 +79,45 @@ if(product[0].quantity>0 )
   }
 
   });
+     
+   }
+   else
+   {
+    console.log("phien "+phien.id+" refes",phien);
+    DB_phien.update({id:phien.id}, {run: 1,time:func.getTime(),endtime:(func.getTime()+60000)}, {multi: true}, function(err) {
+       clearTimeout(phiens['phien_'+phien.id]);
+       phien.run=1;
+       phien.time=func.getTime();
+       phien.endtime=func.getTime()+60000;
+    phiens['phien_'+phien.id]=setTimeout(function(){func.phien_process(phien)},(phien.endtime-phien.time));
+     io.to("product_"+product[0].id).emit("updatephien",{phien});
+    });
+   }
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+    else
+    {
+      io.to("product_"+product[0].id).emit("endphien",{data:0});
     }
   
 
@@ -77,18 +125,19 @@ if(product[0].quantity>0 )
 });
 
 }
-function phienSetEndTime(phien){
+func.phienSetEndTime=function(phien){
 var endt=func.getTime()-phien.endtime;
-phiens['phien_'+phien.id]=setTimeout(phien_process(phien),endtime);
+phiens['phien_'+phien.id]=setTimeout(function(){func.phien_process(phien)},phien.endtime);
 }
 function checkphien(phien){
+  console.log("checkphien");
 if(phien.endtime>func.getTime())
 {
-phien_process(phien);
+func.phien_process(phien);
 }
 else
 {
-phienSetEndTime(phien);
+func.phienSetEndTime(phien);
 }
 
 }

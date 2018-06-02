@@ -7,15 +7,23 @@
 	<img src="{{product.img}}">
 </div>
 <div class="prd_info">
+
+<div class="prd_phiennumber_row">
+Phiên đấu giá : <span class=prd_phiennumber p_id={{product.id}}>Loading...</span>
+</div>
+
+
 <div class="prd_price">
-Giá tiền : <span class="prd_c_price">{{product.price}}</span>
+Giá tiền : <span class="prd_c_price" p_id={{product.id}}>{{product.min_price}}</span>
 </div>
 
 
 <div class="prd_viewcount">
 Người tham gia : <span id=viewcount>1</span> người
 </div>
-
+<div class="prd_timerow">
+Thời gian còn lại : <span class="prd_data prd_timecount" p_id={{product.id}} time=0 endtime=0>0</span>
+</div>
 
 </div>
 </div>
@@ -44,11 +52,43 @@ Người tham gia : <span id=viewcount>1</span> người
 <script type="text/javascript">
 	var p_id='{{product.id}}';
 	$(document).ready(function(){
+
+
+$.post( "/api/product/getdaugia/"+p_id, {})
+  .done(function( data ) {
+    var jsdata=JSON.parse(data);
+    console.log(data);
+    if(jsdata.sys!="false")
+    {
+    if(jsdata[0].phien_doc.length>0){
+$(".prd_phiennumber[p_id='"+jsdata[0].id+"']").html(jsdata[0].phien_doc[0].id);
+$(".prd_c_price[p_id='"+jsdata[0].id+"']").html(jsdata[0].phien_doc[0].price);
+$(".prd_data.prd_timecount[p_id='"+jsdata[0].id+"']").attr("time",jsdata[0].phien_doc[0].time);
+$(".prd_data.prd_timecount[p_id='"+jsdata[0].id+"']").attr("endtime",jsdata[0].phien_doc[0].endtime);
+
+    }
+    }
+  });
+
+
+
+
+
+
+
+
+
 socket.on('connect', function (data) {
     socket.emit('view', { p_id: '{{product.id}}' });
 });
 socket.on('viewcount', function(dtx){
        $("#viewcount").html(dtx.count);
 });
+
+socket.on('updatephien', function(dtx){
+       location.reload();
+});
+
+
 	});
 </script>
