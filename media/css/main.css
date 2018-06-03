@@ -8,6 +8,16 @@ body{
     height: 100%;
   margin: 0px;
 }
+.btn{
+    padding: 5px 10px;
+    background: #0088cc;
+    color:#fff;
+    border-radius:4px;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+  }
 .lg_bm{
   width: 300px;
   height: auto;
@@ -306,7 +316,44 @@ vertical-align: top;
 .footer .fcol.fc1{
 width: 33%;
 }
-
+.nb_cart{
+  display: inline-block;
+  color: red;
+  padding: 2px;
+  float: right;
+  font-size: 12px;
+  vertical-align: middle;
+  background: red;
+  border-radius:100%;
+  color: #fff;
+  margin-left: 5px;
+  min-width: 14px;
+  text-align: center;
+}
+.msg_tbl{
+  position: fixed;
+  left: 0px;
+  top:0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(1,1,1,0.5);
+}
+.msg_box{
+  width: 300px;
+  overflow: hidden;
+  border:1px solid #b6b6b6;
+  border-radius: 4px;
+  background: #fff;
+}
+.msg_title{
+  text-align: left;
+  padding: 5px 10px;
+  border-bottom:1px solid #b6b6b6;
+}
+.msg_content{
+text-align: left;
+  padding: 10px;
+}
 
 /*t_p_row*/
 .t_p_row{

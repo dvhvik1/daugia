@@ -27,14 +27,29 @@ DB_product.aggregate([{$match:match},{
         foreignField: "p_id",
         as: "phien_doc"
     }
+}, {
+    $unwind: "$phien_doc"
 }
 ,
 
 {$lookup: {
         from: "daugias",
-        localField: "id",
+        localField: "phien_doc.id",
         foreignField: "phien_id",
         as: "daugia_doc"
+    }
+},{ "$sort": { "phien_doc.id": -1 } }, {
+    $group: {
+        _id: null,
+        id: {
+            $first: "$id"
+        },
+        phien_doc: {
+            $first: "$phien_doc"
+        },
+        daugia_doc: {
+            $first: "$daugia_doc"
+        }
     }
 }
 ]).exec(function(err, product) {

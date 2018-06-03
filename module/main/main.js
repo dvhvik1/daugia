@@ -4,7 +4,7 @@ var product_box=fs.readFileSync('module/product/view/box.html','utf-8')+'';
 var product_list="";
 var ndt={};
 
-DB_product.find({},function(err,data){
+DB_product.find({quantity:{$gt:0}},function(err,data){
 	
 	if(data.length>0){
 		for (var i = 0; i < data.length; i++) {

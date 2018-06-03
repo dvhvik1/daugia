@@ -21,6 +21,75 @@ else
 	res.send('{"sys":"false","err":"null"}');
 }
 }
+
+
+
+
+if(req.act=="login")
+{
+if(func.stringval(req.body.name)!=""){
+var name=func.removeHtmlTag(func.removeSpcChar(func.stringval(req.body.name)));
+var pass=func.removeHtmlTag(func.removeSpcChar(func.stringval(req.body.pass)));
+var re_pass=func.removeHtmlTag(func.removeSpcChar(func.stringval(req.body.pass)));
+
+var ertxt="";
+if(name!=req.body.name)
+{
+	ertxt="Tên tài khoản không chấp nhận ký tự đặc biệt";
+}
+else
+if(name.length<6)
+{
+	ertxt="Tên tài khoản không thấp hơn 6 ký tự";
+}
+else
+if(pass!=req.body.pass)
+{
+	ertxt="Mật khẩu không chấp nhận ký tự đặc biệt";
+}
+else
+if(pass.length<6)
+{
+	ertxt="Tên tài khoản không thấp hơn 6 ký tự";
+}
+else
+if(pass!=re_pass)
+{
+	ertxt="Mật khẩu không trùng khớp";
+}
+
+
+if(ertxt==""){
+var add_user=DB_user({name:name,pass:pass});
+	add_user.save(function(err,auser){
+		if(err!=null)
+		{
+			errText=err.errmsg;
+			res.send('{"sys":"false","err":"'+errText+'"}');
+		}
+		else
+		{
+		errText="Thêm thành công !";
+		res.send('{"sys":"true","err":"'+errText+'"}');
+	}
+
+	});
+}
+else
+{
+res.send('{"sys":"true","err":"'+errtxt+'"}');
+}
+
+}
+else
+{
+	res.send('{"sys":"false","err":"Chưa nhập dữ liệu"}');
+}
+}
+
+
+
+
 if(req.act=="logout")
 {
 if(func.intval(req.session.u_id)>0){

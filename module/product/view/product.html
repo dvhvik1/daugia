@@ -24,6 +24,29 @@ Người tham gia : <span id=viewcount>1</span> người
 <div class="prd_timerow">
 Thời gian còn lại : <span class="prd_data prd_timecount" p_id={{product.id}} time=0 endtime=0>0</span>
 </div>
+<div class=prd_row>
+	
+<div class="prd_inp_ad">
+<div class="prd_inp_d">-</div>
+<div class="prd_inp_i" min_price=0 price=0>0</div>
+<div class="prd_inp_a">+</div></div>
+
+</div>
+<div class=prd_row>
+	
+<div class="prd_daugia_btn btn">Đấu giá</div>
+
+</div>
+
+
+<div class=prd_row>
+<div class="listDG" p_id={{product.id}}></div>
+</div>
+
+
+
+
+
 
 </div>
 </div>
@@ -41,6 +64,17 @@ Thời gian còn lại : <span class="prd_data prd_timecount" p_id={{product.i
 		display: inline-block;
 		vertical-align: top;
 	}
+	.prd_info{
+		position: relative;
+	}
+.prd_stopdg{
+	position: absolute;
+	left: 0px;
+	top:-2px;
+	width: 100%;
+	height: 100%;
+	background: #fff;
+}
 	.prd_img{
 		height: 300px;
 	}
@@ -48,45 +82,183 @@ Thời gian còn lại : <span class="prd_data prd_timecount" p_id={{product.i
 		width: auto;
 		height: 110%;
 	}
+	.prd_daugia_btn{
+		margin-top: 10px;
+		font-size: 20px;
+	}
+	.prd_inp_i,.prd_inp_a,.prd_inp_d,.prd_inp_ad{
+		display: inline-block;
+		vertical-align: middle;
+		text-align: center;
+		font-size: 20px;
+		width: 20%;
+		padding: 5px 10px;
+	}
+	.prd_inp_ad{
+		border:1px solid #b6b6b6;
+		border-radius: 4px;
+		overflow: hidden;
+		padding: 0px;
+		white-space: nowrap;
+		width: 300px;
+	}
+	.prd_inp_ad:after{
+		content: "";
+		display: block;
+		clear: both;
+	}
+	.prd_inp_i{
+		width: 60%;
+		margin:0px;
+		border: none;
+		border-left:1px solid #b6b6b6;
+		border-right:1px solid #b6b6b6;
+		outline: none;
+	}
+	.prd_inp_i:after{
+		content: " đ";
+	}
+	.prd_inp_a{
+		float: right;
+		cursor: pointer;
+	}
+	.prd_inp_d{
+		float: left;
+		cursor: pointer;
+	}
+	.DG_name,.DG_price,.DG_time{
+		float: left;
+		width: 33.33%;
+	}
+	.DG_row:after{
+		content: "";
+		display: block;
+		clear: both;
+	}
 </style>
 <script type="text/javascript">
 	var p_id='{{product.id}}';
+	var phien_id=0;
+	var winner=-1;
 	$(document).ready(function(){
 
 
+function stopdaugia(){
+	$(".prd_stopdg").remove();
+	$(".prd_info").append("<div class=prd_stopdg>Sản phẩm này đã ngừng đấu giá</div>");
+	$(".prd_stopdg").width($(".prd_info").outerWidth());
+	$(".prd_stopdg").height($(".prd_info").outerHeight()+4);
+}
+
+
+function loaddaugia(){
 $.post( "/api/product/getdaugia/"+p_id, {})
   .done(function( data ) {
     var jsdata=JSON.parse(data);
     console.log(data);
     if(jsdata.sys!="false")
     {
-    if(jsdata[0].phien_doc.length>0){
-$(".prd_phiennumber[p_id='"+jsdata[0].id+"']").html(jsdata[0].phien_doc[0].id);
-$(".prd_c_price[p_id='"+jsdata[0].id+"']").html(jsdata[0].phien_doc[0].price);
-$(".prd_data.prd_timecount[p_id='"+jsdata[0].id+"']").attr("time",jsdata[0].phien_doc[0].time);
-$(".prd_data.prd_timecount[p_id='"+jsdata[0].id+"']").attr("endtime",jsdata[0].phien_doc[0].endtime);
+if(jsdata.length>0 && jsdata[0].phien_doc.run>0){
+    $(".prd_stopdg").remove();
+phien_id=jsdata[0].phien_doc.id;
+$(".prd_inp_i").attr("min_price",jsdata[0].phien_doc.price+1000);
+if(jsdata[0].phien_doc.price+1000>parseFloat($(".prd_inp_i").attr("price")))
+{
+$(".prd_inp_i").attr("price",jsdata[0].phien_doc.price+1000);
+$(".prd_inp_i").html(jsdata[0].phien_doc.price+1000);
+}
+$(".prd_phiennumber[p_id='"+jsdata[0].id+"']").html(jsdata[0].phien_doc.id);
+$(".prd_c_price[p_id='"+jsdata[0].id+"']").html(jsdata[0].phien_doc.price);
+$(".prd_data.prd_timecount[p_id='"+jsdata[0].id+"']").attr("time",jsdata[0].phien_doc.time);
+$(".prd_data.prd_timecount[p_id='"+jsdata[0].id+"']").attr("endtime",jsdata[0].phien_doc.endtime);
+
+$(".listDG[p_id='"+jsdata[0].id+"']").html("");
+if(jsdata[0].daugia_doc.length>0)
+{
+	for (var i = jsdata[0].daugia_doc.length - 1; i >= 0; i--) {
+		var dg=jsdata[0].daugia_doc[i];
+		if(i==jsdata[0].daugia_doc.length - 1)
+		winner=jsdata[0].daugia_doc[i].u_id;
+$(".listDG[p_id='"+jsdata[0].id+"']").append("<div class=DG_row>"+
+"<div class=DG_name>"+dg.u_name+"</div>"+
+"<div class=DG_price>"+dg.price+"</div>"+
+"<div class=DG_time>"+dg.time+"</div>"+
+"</div>");
+	}
+}
+
+
+
+
+
 
     }
+    else
+    {
+    	stopdaugia();
     }
+    }
+  });
+}
+$.post( "/api/phien/getFormProduct/"+p_id, {})
+  .done(function( data ) {
+  	loaddaugia();
   });
 
 
 
+$(document).on("click",".prd_inp_a",function(e){
+	var newp=parseFloat($(".prd_inp_i").attr("price"))+1000;
+	var newmp=parseFloat($(".prd_inp_i").attr("min_price"))+1000;
+	$(".prd_inp_i").attr("price",newp);
+	$(".prd_inp_i").html(newp);
+	e.preventDefault(); return false;
+});
+$(document).on("click",".prd_inp_d",function(e){
+	var newp=parseFloat($(".prd_inp_i").attr("price"))-1000;
+	var newmp=parseFloat($(".prd_inp_i").attr("min_price"));
+	if(newp<newmp)
+		return false;
+	$(".prd_inp_i").attr("price",newp);
+	$(".prd_inp_i").html(newp);
+	e.preventDefault(); return false;
+});
 
 
-
-
-
+$(document).on("click",".prd_daugia_btn",function(e){
+	var price=parseFloat($(".prd_inp_i").attr("price"));
+	console.log("DG",price);
+	socket.emit('DG', { p_id: '{{product.id}}',phien_id:phien_id,price:price });
+	e.preventDefault(); return false;
+});
 
 socket.on('connect', function (data) {
     socket.emit('view', { p_id: '{{product.id}}' });
 });
+
 socket.on('viewcount', function(dtx){
        $("#viewcount").html(dtx.count);
 });
 
+function setDG(dtx){
+	loaddaugia();
+	serverTime=dtx.time;
+	$(".prd_inp_i").attr("min_price",dtx.price+1000);
+if(dtx.price+1000>parseFloat($(".prd_inp_i").attr("price")))
+{
+$(".prd_inp_i").attr("price",dtx.price+1000);
+$(".prd_inp_i").html(dtx.price+1000);
+}
+$(".prd_c_price[p_id='"+dtx.p_id+"']").html(dtx.price);
+$(".prd_timecount[p_id='"+dtx.p_id+"']").attr("time",dtx.time);
+$(".prd_timecount[p_id='"+dtx.p_id+"']").attr("endtime",dtx.endtime);
+}
+
+socket.on('DG', function(dtx){
+      setDG(dtx);
+});
 socket.on('updatephien', function(dtx){
-       location.reload();
+      loaddaugia();
 });
 
 

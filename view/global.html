@@ -15,6 +15,7 @@
 <script src="{{config.rooturl}}socket.io/socket.io.js"></script>
 <script>
 var ROOT="{{config.rooturl}}";
+var u_id={{header.u_id}};
 var serverTime={{config.serverTime}};
 setInterval(function(){serverTime+=1000;},1000);
 </script>

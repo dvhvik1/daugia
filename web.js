@@ -43,7 +43,7 @@ eval(fs.readFileSync('db/product.js')+'');
 eval(fs.readFileSync('db/category.js')+'');
 eval(fs.readFileSync('db/phien.js')+'');
 eval(fs.readFileSync('db/daugia.js')+'');
-
+eval(fs.readFileSync('db/cart.js')+'');
 var phiens={};
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -53,9 +53,9 @@ db.once('open', function() {
 DB_user.update({}, {onl: 0}, {multi: true}, function(err) {  });
 func.phien_process=function(phien){
 console.log("phien "+phien.id+" end");
-DB_phien.update({id:phien.id}, {run: 0}, {multi: true}, function(err) {  });
+DB_phien.update({p_id:phien.p_id}, {run: 0}, {multi: true}, function(err) {});
 DB_product.find({id:phien.p_id}).exec(function(err,product){
-  if(product.length>0){
+  if(typeof product != "undefined" && product.length>0){
 if(product[0].quantity>0 )
     {
   
@@ -71,7 +71,27 @@ DB_daugia.find({phien_id:phien.id}).exec(function(err,daugia){
  console.log("phien "+phien.id+" new");
     clearTimeout(phiens['phien_'+aphien.id]);
     phiens['phien_'+aphien.id]=setTimeout(function(){func.phien_process(aphien)},(aphien.endtime-aphien.time));
+var winnerDG=daugia[daugia.length-1];     
+
+var cartinfo={
+  u_id:winnerDG.u_id,
+  p_id:winnerDG.p_id,
+  phien_id:winnerDG.phien_id,
+  daugia_id:winnerDG.id,
+  price:winnerDG.price,
+  time:func.getTime()
+};
+
+  var add_cart=DB_cart(cartinfo);
+  add_cart.save(function(err,acart){
+    if(!err)
+    {
+      console.log("======= add cart  new");
      io.to("product_"+product[0].id).emit("updatephien",{aphien});
+     io.to("user_"+daugia[daugia.length-1].u_id).emit("mes",{type:"cart",msg:"Bạn đã chiến thắng trong phiên giao dịch <b>"+phien.id+"</b><br> Sản phẩm <b>"+product[0].name+"</b> đã chuyển đến giỏ hàng của bạn."});
+   }
+   });
+
     }
     else
     {
@@ -83,7 +103,7 @@ DB_daugia.find({phien_id:phien.id}).exec(function(err,daugia){
    }
    else
    {
-    console.log("phien "+phien.id+" refes",phien);
+    console.log("phien "+phien.id+" refes");
     DB_phien.update({id:phien.id}, {run: 1,time:func.getTime(),endtime:(func.getTime()+60000)}, {multi: true}, function(err) {
        clearTimeout(phiens['phien_'+phien.id]);
        phien.run=1;
@@ -277,6 +297,7 @@ io.on('connection', function(client) {
 if(func.intval(client.request.session.u_id)>0)
 {
   client.u_id=func.intval(client.request.session.u_id);
+  client.join("user_"+client.u_id);
   client.u_name=func.stringval(client.request.session.u_name);
 }
 //eval(fs.readFileSync('socket_module/onconnect.js')+'');
@@ -294,7 +315,7 @@ io.to("product_"+p_id).emit("viewcount",{count:room.length});
 var rooms={};
 
 client.on('DG', function(data) {
-        
+       
           var p_id=func.intval(data.p_id);
           var phien_id=func.intval(data.phien_id);
           var price=func.intval(data.price);
@@ -305,9 +326,11 @@ client.on('DG', function(data) {
 
 DB_phien.find({id:phien_id,p_id:p_id},function(err,phien){
   if(phien.length>0){
+    
     if(func.intval(client.u_id)>0 && phien[0].endtime>func.getTime() && price>=(phien[0].price+1000)){
-      var endtime=func.getTime();
+      var endtime=func.getTime()+60000;
       var time=func.getTime();
+      console.log("DG",data,client.u_id,phien[0].price);
 var newDG={
   u_id: client.u_id,
   u_name: client.u_name,
@@ -319,15 +342,24 @@ var newDG={
   var addDG=DB_daugia(newDG);
   var update_phien={price:price,time:time,endtime:(time+60000)};
   addDG.save(function(err,aphien){
-    if(err!=null)
+    if(!err)
     {
-      DB_phien.findOneAndUpdate({ id: phien_id }, update_phien, {upsert:true}, function(err, doc){
-    io.to("product_"+p_id).emit("DG",{price:price,endtime:endtime,time:time,u_name:client.u_name,u_id:client.u_id});
+DB_phien.findOneAndUpdate({ id: phien_id }, update_phien, {upsert:true}, function(err, aphien){
+    
+clearTimeout(phiens['phien_'+phien_id]);
+phiens['phien_'+phien_id]=setTimeout(function(){func.phien_process(aphien)},(aphien.endtime-aphien.time));
+io.to("product_"+p_id).emit("DG",{p_id:p_id,phien_id:phien_id,price:price,endtime:endtime,time:time,u_name:client.u_name,u_id:client.u_id});
+
 });
     }
 
   });
 
+}
+else
+{
+  if(func.intval(client.u_id)<=0)
+  client.emit("login",{msg:"Đăng nhập để đấu giá."});
 }
   
   }
