@@ -6,3 +6,7 @@
 * Đăng nhập (user : admin / pass : admin)
 * Admin quản lý thêm sản phẩm và nhóm sản phẩm http://localhost:3000/admin
 * Thay đổi hệ tự cập nhật phiên đấu giá + một số api
+* ==========================UPDATE=================================
+* Thêm chức năng đăng ký
+* Xong phần đấu giá
+* Thêm một số api

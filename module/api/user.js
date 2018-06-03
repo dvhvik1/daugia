@@ -25,12 +25,12 @@ else
 
 
 
-if(req.act=="login")
+if(req.act=="reg")
 {
 if(func.stringval(req.body.name)!=""){
 var name=func.removeHtmlTag(func.removeSpcChar(func.stringval(req.body.name)));
 var pass=func.removeHtmlTag(func.removeSpcChar(func.stringval(req.body.pass)));
-var re_pass=func.removeHtmlTag(func.removeSpcChar(func.stringval(req.body.pass)));
+var re_pass=func.removeHtmlTag(func.removeSpcChar(func.stringval(req.body.re_pass)));
 
 var ertxt="";
 if(name!=req.body.name)
@@ -50,7 +50,7 @@ if(pass!=req.body.pass)
 else
 if(pass.length<6)
 {
-	ertxt="Tên tài khoản không thấp hơn 6 ký tự";
+	ertxt="Mật khẩu không thấp hơn 6 ký tự";
 }
 else
 if(pass!=re_pass)
@@ -62,22 +62,27 @@ if(pass!=re_pass)
 if(ertxt==""){
 var add_user=DB_user({name:name,pass:pass});
 	add_user.save(function(err,auser){
-		if(err!=null)
+		if(!err)
+			{
+		errText="Thêm thành công !";
+		res.send('{"sys":"true","err":"'+errText+'"}');
+		console.log("=========----",auser);
+		req.session.u_id=auser.id;
+	req.session.u_name=auser.name;
+	req.session.save();
+	}
+	else
 		{
 			errText=err.errmsg;
 			res.send('{"sys":"false","err":"'+errText+'"}');
 		}
-		else
-		{
-		errText="Thêm thành công !";
-		res.send('{"sys":"true","err":"'+errText+'"}');
-	}
+		
 
 	});
 }
 else
 {
-res.send('{"sys":"true","err":"'+errtxt+'"}');
+res.send('{"sys":"false","err":"'+ertxt+'"}');
 }
 
 }
