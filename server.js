@@ -216,7 +216,10 @@ app.use(bodyParser.urlencoded({
 var config={
   rooturl:"http://localhost:3000/"
 };
-
+if(port!=3000)
+config={
+  rooturl:"https://daugia-vikclass.herokuapp.com/"
+};
 global.md5=md5;
 global.fs=fs;
 global.func=func;
