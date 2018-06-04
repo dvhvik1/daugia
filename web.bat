@@ -1,4 +1,4 @@
 @echo off
 
-node web.js
+node server.js
 pause
