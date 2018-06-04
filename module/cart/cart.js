@@ -12,6 +12,7 @@ DB_cart.aggregate([{$match:{u_id:u_id}},{
 }
 ]).exec(function(err, acart) {
 	var html="Chưa đăng nhập";
+    if(!err){
     if(acart.length>0){
     	html="";
     	var tong=0;
@@ -27,6 +28,7 @@ DB_cart.aggregate([{$match:{u_id:u_id}},{
 	{
 		html="Chưa có đơn hàng nào";
 	}
+}
 	ndt.html=html;
     HTML.main.content=func.templ(HTML.main.content,{cart:ndt});
 	endMain(false,"ok");
