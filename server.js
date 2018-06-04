@@ -8,7 +8,6 @@ var SECKEY="keysec";
 var session = require("express-session");
 var cookieParser = require('cookie-parser')("keysec");
 var async = require('async');
-var ejs = require('ejs');
 var fs = require('fs');
 var path = require('path');
 var cfunc = require('./lib/Functions.js');
@@ -220,7 +219,6 @@ var config={
 
 global.md5=md5;
 global.fs=fs;
-global.ejs=ejs;
 global.func=func;
 global.config=config;
 app.use("/media",express.static('./media'));
