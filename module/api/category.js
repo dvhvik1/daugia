@@ -45,7 +45,7 @@ else
 }
 }
 
-if(req.act=="remove" && req.session.isAdmin=="admin")
+if(req.act=="remove" && req.session.isAdmin==1)
 {
 
 var id_remove=func.intval(req.body.id);

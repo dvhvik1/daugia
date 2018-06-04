@@ -1,3 +1,25 @@
+
+if(req.act=="remove" && req.session.isAdmin==1)
+{
+
+var id_remove=func.intval(req.body.id);
+if(id_remove>0){
+DB_order.remove({ id: id_remove }, function(err) {
+    if (!err) {
+       res.send('{"sys":"true"}');
+    }
+    else {
+       res.send('{"sys":"false"}');
+    }
+});
+}
+else
+{
+  res.send('{"sys":"false"}');
+}
+}
+
+
 if(req.act=="make" && func.intval(req.session.u_id)>0)
 {
 if(func.stringval(req.body.act)=="make"){

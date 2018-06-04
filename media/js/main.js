@@ -178,6 +178,8 @@ e.stopPropagation();
 $(document).on("click",".logu_box",function(e){
     $(".lg_bm").remove();
     $("body").append("<div class='lg_bm HWCO'><div class=lg_logout>Đăng xuất</div></div>");
+if($(".logu_box").text().trim()=="admin")
+    {$(".lg_bm").append("<a class=lg_row href='./admin'>Quản lý admin</a>");}
 $(".lg_bm").css({top:$(".menu").outerHeight(),left:$(this).offset().left-$(".lg_bm").outerWidth()+$(this).outerWidth()});
 e.stopPropagation();
 });

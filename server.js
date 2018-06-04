@@ -64,6 +64,7 @@ if(product[0].quantity>0 )
 
 
 DB_daugia.find({phien_id:phien.id}).exec(function(err,daugia){
+  if(!err){
     if(daugia.length>0){
       var phiendf={p_id:product[0].id,price:product[0].min_price,time:func.getTime(),endtime:(func.getTime()+60000)};
   var add_phien=DB_phien(phiendf);
@@ -115,6 +116,7 @@ var cartinfo={
      io.to("product_"+product[0].id).emit("updatephien",phien);
     });
    }
+ }
   });
 
 

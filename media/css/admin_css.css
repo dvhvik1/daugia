@@ -140,3 +140,44 @@ p{
   margin: 0px;
   margin-bottom: 5px;
 }
+
+
+.btn{
+    padding: 5px 10px;
+    background: #0088cc;
+    color:#fff;
+    border-radius:4px;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+  }
+
+.msg_tbl{
+  position: fixed;
+  left: 0px;
+  top:0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(1,1,1,0.5);
+}
+.msg_box{
+  width: 300px;
+  overflow: hidden;
+  border:1px solid #b6b6b6;
+  border-radius: 4px;
+  background: #fff;
+}
+.msg_title{
+  text-align: left;
+  padding: 5px 10px;
+  border-bottom:1px solid #b6b6b6;
+}
+.msg_content{
+text-align: left;
+  padding: 10px;
+}
+.msg_footer{
+  text-align: left;
+  padding: 5px 10px;
+}

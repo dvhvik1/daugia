@@ -65,6 +65,13 @@ body{
   width: 24%;
   vertical-align: top;
 }
+.prd_name{
+      padding-top: 10px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .prd_time{
   display: inline-block;
 }
@@ -89,7 +96,7 @@ body{
     transform: translateX(-50%) translateY(-50%);
 }
 .prd_price{
-  padding-top: 10px;
+  padding-top: 5px;
 }
 .prd_c_price{
   color: #111;

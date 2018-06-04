@@ -1,8 +1,8 @@
-HTML.main.content=fs.readFileSync("module/"+req.module+'/view/order.html','utf-8')+'';
+HTML.main.content=fs.readFileSync('module/'+req.module+'/view/'+req.act+'.html','utf-8')+'';
+
 var ndt={};
-HTML.header.title="Đơn hàng của bạn";
-var u_id=func.intval(req.session.u_id);
-DB_order.find({u_id:u_id}).exec(function(err, aorder) {
+HTML.header.title="Đơn hàng";
+DB_order.find({}).exec(function(err, aorder) {
 	var html="Chưa đăng nhập";
     if(aorder.length>0){
     	html="";
@@ -10,7 +10,8 @@ DB_order.find({u_id:u_id}).exec(function(err, aorder) {
     	for (var i = aorder.length - 1; i >= 0; i--) {
     		var norder=aorder[i];
     		tong+=norder.price;
-    		html+="<div class='order_row'><div class=order_id>Đơn hàng số : "+norder.id+"</div>";
+            console.log("============load ord===",norder);
+    		html+="<div class='order_row' ord_id="+(norder.id)+"><div class=order_id>Đơn hàng số : "+norder.id+" | Người mua : "+norder.u_id+"</div>";
 
 
 for (var j = 0; j < norder.products.length; j++) {
@@ -21,7 +22,7 @@ html+="<div class=order_p_price>"+func.toVnd(norder.products[j].price)+"</div></
 }
 html+="<div class=order_ir>Địa chỉ giao hàng : "+(norder.address)+"</div>";
 html+="<div class=order_ir>Số điện thoại : "+(norder.phone)+"</div>";
-html+="<div class=order_price>Tổng tiền : "+func.toVnd(norder.total_price)+"</div></div>";
+html+="<div class=order_price>Tổng tiền : "+func.toVnd(norder.total_price)+"</div><div class='delete_ord btn' ord_id="+(norder.id)+">Xóa</div></div>";
     	}
     }
 	else

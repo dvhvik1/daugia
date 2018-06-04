@@ -2,7 +2,41 @@
 <div id=loadproductlist>
 	
 </div>
-
+<style type="text/css">
+.prd_row:after{
+    display:block;
+    content: "";
+    clear: both;
+}
+.prd_row{
+    border:1px solid #b6b6b6;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+    .prd_img{
+        width: 100px;
+        height: 100px;
+        overflow: hidden;
+        display: inline-block;
+        float: left;
+        margin-right: 10px;
+    }
+    .prd_img img{
+        height: 110%;
+    width: auto;
+    max-width: inherit;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    }
+    .prd_price,.prd_sl,.prd_name,.prd_img{
+        display: block;
+    }
+</style>
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -15,7 +49,7 @@ $.post( "/api/product/getlist", {})
     {
     	for (var i = jsdata.length - 1; i >= 0; i--) {
     		var cate=jsdata[i];
-    		html+="<div class='cate_row'>"+cate.name+" | "+cate.quantity+" | "+cate.min_price+" | "+cate.price+"</div>";
+    		html+="<div class='prd_row' p_id='"+cate.id+"'><div class='prd_img'><img src='"+cate.img+"'></div><div class=prd_name>"+cate.name+"</div><div class=prd_sl>Số lượng : "+cate.quantity+"</div><div class=prd_price>Giá : "+toVnd(cate.price)+"</div><div class=prd_price>Giá khởi điểm : "+toVnd(cate.min_price)+"</div><div class=prd_delete p_id='"+cate.id+"'>Xóa</div><a class=prd_edit href='./admin/product_edit/"+cate.id+"'>Sữa</a></div>";
     	}
 
     }
@@ -23,6 +57,42 @@ $.post( "/api/product/getlist", {})
 });
 }
 loadproductlist();
+
+
+
+$(document).on("click",".prd_delete",function(){
+    $(".msg_tbl").remove();
+$("body").append("<table class=msg_tbl><tr><td valign=middle align=center>"+
+    "<div class='msg_box HWCO'>"+
+    "<div class=msg_title>Thông báo</div>"+
+    "<div class=msg_content>Bạn muốn xóa sản phẩm này?</div>"+
+    "<div class=msg_footer><div class='delete_prd btn' p_id='"+$(this).attr("p_id")+"'>Xóa</div></div>"+
+    "</div>"+
+    "</td></tr></table>");
+});
+
+
+$(document).on("click",".delete_prd",function(){
+    var p_id=$(this).attr("p_id");
+$.post( "/api/product/remove", {id:p_id})
+.done(function( data ) {
+var jsdata=JSON.parse(data);
+if(jsdata.sys=="false")
+{
+    alert("Không thể xóa");
+}
+else
+{
+    $(".prd_row[p_id='"+p_id+"']").remove();
+}
+});
+
+});
+
+
+
+
+
 
 	});
 </script>

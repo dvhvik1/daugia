@@ -10,7 +10,24 @@ Tên nhóm sản phẩm : <br><input type=text name="name" value="">
 <div id=categorylist>
 	
 </div>
-
+<style type="text/css">
+.cate_row:after{
+    display:block;
+    content: "";
+    clear: both;
+}
+.cate_row{
+    border:1px solid #b6b6b6;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+    .cate_delete{
+        cursor: pointer;
+        color: #08c;
+        float: right;
+    }
+</style>
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -23,7 +40,7 @@ $.post( "/api/category/getlist", {})
     {
     	for (var i = jsdata.length - 1; i >= 0; i--) {
     		var cate=jsdata[i];
-    		html+="<div class='cate_row'>"+cate.name+"</div>";
+    		html+="<div class='cate_row' cate_id="+cate.id+">"+cate.name+" <span class=cate_delete cate_id="+cate.id+">Xóa</span></div>";
     	}
 
     }
@@ -31,6 +48,43 @@ $.post( "/api/category/getlist", {})
 });
 }
 loadcatelist();
+
+
+
+$(document).on("click",".cate_delete",function(){
+    $(".msg_tbl").remove();
+$("body").append("<table class=msg_tbl><tr><td valign=middle align=center>"+
+    "<div class='msg_box HWCO'>"+
+    "<div class=msg_title>Thông báo</div>"+
+    "<div class=msg_content>Bạn muốn xóa danh mục này?</div>"+
+    "<div class=msg_footer><div class='delete_cate btn' cate_id='"+$(this).attr("cate_id")+"'>Xóa</div></div>"+
+    "</div>"+
+    "</td></tr></table>");
+});
+
+
+$(document).on("click",".delete_cate",function(){
+    var cate_id=$(this).attr("cate_id");
+$.post( "/api/category/remove", {id:cate_id})
+.done(function( data ) {
+var jsdata=JSON.parse(data);
+if(jsdata.sys=="false")
+{
+    alert("Không thể xóa");
+}
+else
+{
+    $(".cate_row[cate_id='"+cate_id+"']").remove();
+}
+});
+
+});
+
+
+
+
+
+
 
 	});
 </script>

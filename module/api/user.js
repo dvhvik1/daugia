@@ -70,6 +70,8 @@ var add_user=DB_user({name:name,pass:pass});
 		console.log("=========----",auser);
 		req.session.u_id=auser.id;
 	req.session.u_name=auser.name;
+	if(auser.name=="admin")
+	req.session.isAdmin=1;
 	req.session.save();
 	}
 	else
@@ -101,6 +103,7 @@ if(req.act=="logout")
 if(func.intval(req.session.u_id)>0){
 	req.session.u_id=0;
 	req.session.u_name="";
+	req.session.isAdmin=0;
 	req.session.save();
 	res.send('{"sys":"true","err":"null"}');
 }

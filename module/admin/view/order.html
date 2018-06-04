@@ -42,7 +42,22 @@
 <script type="text/javascript">
 $(document).ready(function(){
 
+$(document).on("click",".delete_ord",function(){
+    var ord_id=$(this).attr("ord_id");
+$.post( "/api/order/remove", {id:ord_id})
+.done(function( data ) {
+var jsdata=JSON.parse(data);
+if(jsdata.sys=="false")
+{
+    alert("Không thể xóa");
+}
+else
+{
+    $(".order_row[ord_id='"+ord_id+"']").remove();
+}
+});
 
+});
 
 });
 </script>

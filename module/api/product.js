@@ -11,6 +11,26 @@ DB_product.find({},function(err,data){
 });
 }
 
+if(req.act=="remove" && req.session.isAdmin==1)
+{
+console.log("==========delete prd========");
+var id_remove=func.intval(req.body.id);
+if(id_remove>0){
+DB_product.remove({ id: id_remove }, function(err) {
+    if (!err) {
+       res.send('{"sys":"true"}');
+    }
+    else {
+       res.send('{"sys":"false"}');
+    }
+});
+}
+else
+{
+    res.send('{"sys":"false"}');
+}
+}
+
 if(req.act=="getdaugia")
 {
 	var match={};
