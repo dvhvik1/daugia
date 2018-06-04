@@ -54,6 +54,7 @@ DB_cart.aggregate([{$match:{u_id:u_id}},{
     	var tong=0;
     	for (var i = acart.length - 1; i >= 0; i--) {
     		var ncart=acart[i];
+        if(ncart.product_doc.length>0){
     		tong+=ncart.price;
 
 var prd={};
@@ -63,7 +64,7 @@ prd.price=ncart.price;
 prd.phien_id=ncart.product_doc[0].phien_id;
 prds.push(prd);
 
-
+}
     	}
     	total_price=tong+29000;
 
