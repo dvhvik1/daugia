@@ -56,7 +56,7 @@ DB_phien.find({p_id:id},function(err,phien){
 		{
 			console.log("tao phien : ",aphien);
 			phiens['phien_'+aphien.id]=setTimeout(function(){func.phien_process(aphien)},(aphien.endtime-aphien.time));
-     io.to("product_"+product[0].id).emit("updatephien",{aphien});
+     io.to("product_"+product[0].id).emit("updatephien",aphien);
 		res.send(JSON.stringify(aphien));
 	}
 	else

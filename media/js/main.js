@@ -1,4 +1,25 @@
 var socket;
+function toVnd(data,c,d,t){
+var n = data, 
+    c = isNaN(c = Math.abs(c)) ? 0 : c, 
+    d = d == undefined ? "." : d, 
+    t = t == undefined ? "." : t, 
+    s = n < 0 ? "-" : "", 
+    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))), 
+    j = (j = i.length) > 3 ? j % 3 : 0;
+   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "")+" đ";
+ }
+function toHHMMSS(i) {
+        var sec_num = parseInt(i, 10); // don't forget the second param
+        var hours   = Math.floor(sec_num / 3600);
+        var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+        var seconds = sec_num - (hours * 3600) - (minutes * 60);
+        
+        if (hours   < 10) {hours   = "0"+hours;}
+        if (minutes < 10) {minutes = "0"+minutes;}
+        if (seconds < 10) {seconds = "0"+seconds;}
+        return hours+':'+minutes+':'+seconds;
+}
 function loadcart(){
 if(u_id>0)
 $.post( "api/cart/user_count", {})
@@ -24,7 +45,63 @@ var linksList = document.querySelectorAll('a[href]');
   socket.on('connect', function (data) {
     console.log("connected");
     socket.emit('message', { my: 'data' });
+
+
+
+
+if($(".prd_item").length>0)
+{
+$(".prd_item").each(function(){
+    loadDGmain($(this).attr("p_id"));
+socket.emit('view', { p_id: $(this).attr("p_id")});
+});
+}
+
+
+
+
+
+
+
+
+
+
+
   });
+function loadDGmain(p_id){
+$.post( "/api/product/getdaugia/"+p_id, {})
+  .done(function( data ) {
+    var jsdata=JSON.parse(data);
+    console.log(data);
+    if(jsdata.sys!="false")
+    {
+if(jsdata.length>0 && jsdata[0].phien_doc.run>0){
+    var dtx=jsdata[0].phien_doc;
+    serverTime=dtx.time;
+    console.log(".prd_c_price[p_id='"+dtx.p_id+"']");
+$(".prd_c_price[p_id='"+dtx.p_id+"']").html(toVnd(dtx.price));
+$(".prd_timecount[p_id='"+dtx.p_id+"']").attr("time",dtx.time);
+$(".prd_timecount[p_id='"+dtx.p_id+"']").attr("endtime",dtx.endtime);
+    }
+    else
+    {
+    }
+    }
+  });
+}
+function setDGmain(dtx){
+$(".prd_c_price[p_id='"+dtx.p_id+"']").html(toVnd(dtx.price));
+$(".prd_timecount[p_id='"+dtx.p_id+"']").attr("time",dtx.time);
+$(".prd_timecount[p_id='"+dtx.p_id+"']").attr("endtime",dtx.endtime);
+}
+socket.on('DG', function(dtx){
+      setDGmain(dtx);
+});
+socket.on('updatephien', function(dtx){
+      loadDGmain(dtx.p_id);
+});
+
+
 socket.on('hello', function(dtx){
         console.log(dtx);
 });
@@ -51,6 +128,9 @@ $("body").append("<table class=msg_tbl><tr><td valign=middle align=center>"+
 }
 
 loadcart();
+
+
+
 
 $(document).on("click",".msg_tbl",function(){
 $(".msg_tbl").remove();
@@ -160,6 +240,8 @@ $(".prd_timecount").each(function(){
     var ctime=parseInt((endtime-serverTime)/1000);
     if(ctime<=0)
         ctime="Đang đợi kết thúc";
+    else
+        ctime=toHHMMSS(ctime);
     $(this).html(ctime);
 });
 },1000);

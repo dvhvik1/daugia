@@ -44,6 +44,7 @@ eval(fs.readFileSync('db/category.js')+'');
 eval(fs.readFileSync('db/phien.js')+'');
 eval(fs.readFileSync('db/daugia.js')+'');
 eval(fs.readFileSync('db/cart.js')+'');
+eval(fs.readFileSync('db/order.js')+'');
 var phiens={};
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -55,7 +56,9 @@ func.phien_process=function(phien){
 console.log("phien "+phien.id+" end");
 DB_phien.update({p_id:phien.p_id}, {run: 0}, {multi: true}, function(err) {});
 DB_product.find({id:phien.p_id}).exec(function(err,product){
-  if(typeof product != "undefined" && product.length>0){
+  if(typeof product == "undefined")
+product=[];
+  if(product.length>0){
 if(product[0].quantity>0 )
     {
   
@@ -87,7 +90,7 @@ var cartinfo={
     if(!err)
     {
       console.log("======= add cart  new");
-     io.to("product_"+product[0].id).emit("updatephien",{aphien});
+     io.to("product_"+product[0].id).emit("updatephien",aphien);
      io.to("user_"+daugia[daugia.length-1].u_id).emit("mes",{type:"cart",msg:"Bạn đã chiến thắng trong phiên giao dịch <b>"+phien.id+"</b><br> Sản phẩm <b>"+product[0].name+"</b> đã chuyển đến giỏ hàng của bạn."});
    }
    });
@@ -103,14 +106,14 @@ var cartinfo={
    }
    else
    {
-    console.log("phien "+phien.id+" refes");
+    console.log("phien "+phien.id+" refes "+phien.p_id);
     DB_phien.update({id:phien.id}, {run: 1,time:func.getTime(),endtime:(func.getTime()+60000)}, {multi: true}, function(err) {
        clearTimeout(phiens['phien_'+phien.id]);
        phien.run=1;
        phien.time=func.getTime();
        phien.endtime=func.getTime()+60000;
     phiens['phien_'+phien.id]=setTimeout(function(){func.phien_process(phien)},(phien.endtime-phien.time));
-     io.to("product_"+product[0].id).emit("updatephien",{phien});
+     io.to("product_"+product[0].id).emit("updatephien",phien);
     });
    }
   });
@@ -327,7 +330,7 @@ client.on('DG', function(data) {
 DB_phien.find({id:phien_id,p_id:p_id},function(err,phien){
   if(phien.length>0){
     
-    if(func.intval(client.u_id)>0 && phien[0].endtime>func.getTime() && price>=(phien[0].price+1000)){
+    if(func.intval(client.u_id)>0 && phien[0].endtime>func.getTime() && price>=(phien[0].price+1000) && phien[0].winner!=client.u_id){
       var endtime=func.getTime()+60000;
       var time=func.getTime();
       console.log("DG",data,client.u_id,phien[0].price);
@@ -340,7 +343,7 @@ var newDG={
   time:time
 }
   var addDG=DB_daugia(newDG);
-  var update_phien={price:price,time:time,endtime:(time+60000)};
+  var update_phien={winner:client.u_id,price:price,time:time,endtime:(time+60000)};
   addDG.save(function(err,aphien){
     if(!err)
     {
@@ -360,6 +363,9 @@ else
 {
   if(func.intval(client.u_id)<=0)
   client.emit("login",{msg:"Đăng nhập để đấu giá."});
+if(phien[0].winner==client.u_id && phien[0].winner!=0)
+client.emit("mes",{type:"",msg:"Bạn đang đạt giá cao nhất."});
+   
 }
   
   }

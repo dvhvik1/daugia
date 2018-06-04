@@ -15,9 +15,9 @@ var userSchema = mongoose.Schema({
   socket:{
     type:String
   },
-    skin: {
-    type: String,
-    default: '10000002'
+    report: {
+    type: Number,
+    default: 0
 }
 ,
     onl: {

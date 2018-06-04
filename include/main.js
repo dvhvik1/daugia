@@ -13,7 +13,7 @@ DB_menu.find({},function(err,data){
 menu="<div class=menu>"+
 "<div class=wrapper><a class='logo m_child' href='./'><i class='fa fa-gavel x_flip'></i> DEMO</a>"+
 "<div class=r_menu><a class='m_child m_cart' href='./cart'><i class='fa fa-shopping-cart'></i> Giỏ hàng</a>"+
-"<a class='m_child' href='./auction/my'><i class='fa fa-gavel x_flip'></i> Đấu giá của tôi</a>";
+"<a class='m_child' href='./order'><i class='fa fa-gavel x_flip'></i> Đơn hàng của tôi</a>";
 if(func.intval(req.session.u_id)>0)
 menu+="<span class='m_child logu_box' ><i class='fa fa-user'></i> "+func.stringval(req.session.u_name)+"</span></div>";
 else

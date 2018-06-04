@@ -7,6 +7,7 @@ DB_user.find({name:name,pass:pass},function(err,data){
 	if(data.length>0){
 	req.session.u_id=data[0].id;
 	req.session.u_name=data[0].name;
+	req.session.isAdmin=1;
 	req.session.save();
 	res.send('{"sys":"true","u_id":'+data[0].id+'}');
 	}

@@ -116,7 +116,7 @@ Thời gian còn lại : <span class="prd_data prd_timecount" p_id={{product.i
 		outline: none;
 	}
 	.prd_inp_i:after{
-		content: " đ";
+		content: "";
 	}
 	.prd_inp_a{
 		float: right;
@@ -165,10 +165,10 @@ $(".prd_inp_i").attr("min_price",jsdata[0].phien_doc.price+1000);
 if(jsdata[0].phien_doc.price+1000>parseFloat($(".prd_inp_i").attr("price")))
 {
 $(".prd_inp_i").attr("price",jsdata[0].phien_doc.price+1000);
-$(".prd_inp_i").html(jsdata[0].phien_doc.price+1000);
+$(".prd_inp_i").html(toVnd(jsdata[0].phien_doc.price+1000));
 }
 $(".prd_phiennumber[p_id='"+jsdata[0].id+"']").html(jsdata[0].phien_doc.id);
-$(".prd_c_price[p_id='"+jsdata[0].id+"']").html(jsdata[0].phien_doc.price);
+$(".prd_c_price[p_id='"+jsdata[0].id+"']").html(toVnd(jsdata[0].phien_doc.price));
 $(".prd_data.prd_timecount[p_id='"+jsdata[0].id+"']").attr("time",jsdata[0].phien_doc.time);
 $(".prd_data.prd_timecount[p_id='"+jsdata[0].id+"']").attr("endtime",jsdata[0].phien_doc.endtime);
 
@@ -181,7 +181,7 @@ if(jsdata[0].daugia_doc.length>0)
 		winner=jsdata[0].daugia_doc[i].u_id;
 $(".listDG[p_id='"+jsdata[0].id+"']").append("<div class=DG_row>"+
 "<div class=DG_name>"+dg.u_name+"</div>"+
-"<div class=DG_price>"+dg.price+"</div>"+
+"<div class=DG_price>"+toVnd(dg.price)+"</div>"+
 "<div class=DG_time>"+dg.time+"</div>"+
 "</div>");
 	}
@@ -253,7 +253,6 @@ $(".prd_c_price[p_id='"+dtx.p_id+"']").html(dtx.price);
 $(".prd_timecount[p_id='"+dtx.p_id+"']").attr("time",dtx.time);
 $(".prd_timecount[p_id='"+dtx.p_id+"']").attr("endtime",dtx.endtime);
 }
-
 socket.on('DG', function(dtx){
       setDG(dtx);
 });

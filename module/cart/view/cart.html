@@ -1,0 +1,74 @@
+<div class="view_box">
+<div class="cart_view">
+<div class="cart_content">
+{{cart.html}}
+</div>
+</div>
+</div>
+<style type="text/css">
+.cart_row{
+	width: 100%;
+	border:1px solid #b6b6b6;
+	border-radius: 10px;
+	margin-bottom: 10px;
+}
+.cart_img,.cart_name,.cart_price,.cart_read{
+	display: inline-block;
+	vertical-align: middle;
+	padding: 10px;
+}
+.cart_read{
+	cursor: pointer;
+	color: #08c;
+	display: none;
+}
+.cart_img .prd_img{
+	width: 100px;
+	height: 100px;
+}
+</style>
+<script type="text/javascript">
+$(document).ready(function(){
+
+
+$(document).on("click",".cart_thanhtoan",function(e){
+
+$(".msg_tbl").remove();
+$("body").append("<table class=msg_tbl><tr><td valign=middle align=center>"+
+    "<div class='msg_box HWCO'>"+
+    "<div class=msg_title>Nhập thông tin giao hàng</div>"+
+    "<div class=msg_content><div class=lg_row><input id=ord_address placeholder='Địa chỉ' type=text name=address class=lg_inp></div><div class=lg_row><input id=ord_phone placeholder='Số điện thoại' type=phone name=phone class=lg_inp></div><div class=lg_row><div class='pay_make btn'>Đặt hàng</div></div></div>"+
+    "<div class=msg_footer></div>"+
+    "</div>"+
+    "</td></tr></table>");
+
+
+e.stopPropagation();
+});
+
+
+$(document).on("click",".pay_make",function(){
+if($(".nb_cart").length<=0)
+	{
+return false;
+	}
+
+$.post( "api/order/make", {act:"make",address:$("#ord_address").val(),phone:$("#ord_phone").val()})
+  .done(function( data ) {
+    var jsdata=JSON.parse(data);
+    if(jsdata.sys=="false")
+    {
+        alert(jsdata.err);
+    }
+    else
+    {
+    	alert(jsdata.err);
+        location.reload();
+    }
+  });
+
+});
+
+
+});
+</script>

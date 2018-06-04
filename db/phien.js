@@ -8,6 +8,10 @@ var phienSchema = mongoose.Schema({
     type:Number,
     default:0
   },
+  winner:{
+    type:Number,
+    default:0
+  },
   time:{
     type:Number,
     default: 0

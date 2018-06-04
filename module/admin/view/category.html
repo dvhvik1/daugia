@@ -7,6 +7,30 @@ Tên nhóm sản phẩm : <br><input type=text name="name" value="">
 <input type=submit name="ok" value="ADD">
 </form>
 </div>
-<div>
-	{{categorylist}}
+<div id=categorylist>
+	
 </div>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+function loadcatelist(){
+$.post( "/api/category/getlist", {})
+  .done(function( data ) {
+  	var html="";
+    var jsdata=JSON.parse(data);
+    if(jsdata.length>0)
+    {
+    	for (var i = jsdata.length - 1; i >= 0; i--) {
+    		var cate=jsdata[i];
+    		html+="<div class='cate_row'>"+cate.name+"</div>";
+    	}
+
+    }
+    $("#categorylist").html(html);
+});
+}
+loadcatelist();
+
+	});
+</script>

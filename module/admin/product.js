@@ -71,8 +71,32 @@ product.url=func.makeUrl(product.name);
 
 
 var productsave = new DB_product({ name: product.name,des:product.des,img:product.img,tag:product.tag,price:product.price,min_price:product.min_price,html:product.html,time:product.time,url:product.url,category:product.category,quantity:product.quantity });
-productsave.save(function (err, user1) {
-	HTML.main.content=func.tmp("Đăng sản phẩm thành công !!<br>","msg.err",HTML.main.content);
+productsave.save(function (err, aproduct) {
+console.log("aproduct:",aproduct);
+if(!err)
+		{
+var phiendf={p_id:aproduct.id,price:aproduct.min_price,time:func.getTime(),endtime:(func.getTime()+60000)};
+	var add_phien=DB_phien(phiendf);
+	add_phien.save(function(err,aphien){
+		if(!err)
+		{
+			console.log("tao phien : ",aphien);
+			phiens['phien_'+aphien.id]=setTimeout(function(){func.phien_process(aphien)},(aphien.endtime-aphien.time));
+     io.to("product_"+aproduct.id).emit("updatephien",{aphien});
+	}
+	else
+	{
+		
+	}
+
+	});
+}
+
+
+
+
+
+HTML.main.content=func.tmp("Đăng sản phẩm thành công !!<br>","msg.err",HTML.main.content);
 HTML.main.content=func.temp(HTML.main.content,ndt);
 endMain(false,"ok");
 });
