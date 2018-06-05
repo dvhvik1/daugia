@@ -10,6 +10,47 @@ DB_category.find({},function(err,data){
 	}
 });
 }
+
+
+if(req.act=="edit" && req.session.isAdmin==1)
+{
+var id_remove=func.intval(req.body.id);
+var name=func.removeHtmlTag(func.removeSpcChar(func.stringval(req.body.name)));
+if(id_remove>0 && name!=""){
+	DB_category.find({ id: id_remove },function(err,data){
+		if(!err)
+	if(data.length>0){
+DB_category.update({ id: id_remove },{name:name}, {multi:true}, function(err,doc) {
+	console.log("====update===",doc);
+    if (!err) {
+       res.send('{"sys":"true"}');
+    }
+    else {
+       res.send('{"sys":"false","err":"Tên bị trùng"}');
+    }
+});
+}
+	else
+	{
+		res.send('{"sys":"false","err":"Không tồn tại nhóm này"}');
+	}
+});
+}
+else
+{
+    res.send('{"sys":"false","err":"Tên nhóm không được để trống '+id_remove+' '+name+'"}');
+}
+}
+
+
+
+
+
+
+
+
+
+
 if(req.act=="add")
 {
 var new_category={name:"",url:""};

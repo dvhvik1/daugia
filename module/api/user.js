@@ -32,8 +32,15 @@ if(func.stringval(req.body.name)!=""){
 var name=func.removeHtmlTag(func.removeSpcChar(func.stringval(req.body.name)));
 var pass=func.removeHtmlTag(func.removeSpcChar(func.stringval(req.body.pass)));
 var re_pass=func.removeHtmlTag(func.removeSpcChar(func.stringval(req.body.re_pass)));
-
+var email=func.removeHtmlTag(func.removeSpcChar(func.stringval(req.body.email)));
+var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+var check=re.test(String(email).toLowerCase());
 var ertxt="";
+if(!check)
+{
+ertxt="Email không hợp lệ";
+}
+else
 if(name!=req.body.name)
 {
 	ertxt="Tên tài khoản không chấp nhận ký tự đặc biệt";
@@ -61,7 +68,7 @@ if(pass!=re_pass)
 
 
 if(ertxt==""){
-var add_user=DB_user({name:name,pass:pass});
+var add_user=DB_user({name:name,pass:pass,email:email});
 	add_user.save(function(err,auser){
 		if(!err)
 			{

@@ -168,7 +168,7 @@ e.stopPropagation();
 
 $(document).on("click",".reg_box",function(e){
     $(".lg_bm").remove();
-    $("body").append("<div class='lg_bm HWCO'><div class=lg_title>Đăng ký</div><div class=lg_row>Tên tài khoản:<br><input type=text name=user class=lg_inp></div><div class=lg_row>Mật khẩu:<br><input type=password name=pass class=lg_inp></div><div class=lg_row>Nhập lại mật khẩu:<br><input type=password name=re_pass class=lg_inp></div><div class=lg_row><div class='lg_reg_btn btn'>Đăng ký</div></div></div>");
+    $("body").append("<div class='lg_bm HWCO'><div class=lg_title>Đăng ký</div><div class=lg_row>Tên tài khoản:<br><input type=text name=user class=lg_inp></div><div class=lg_row>Mật khẩu:<br><input type=password name=pass class=lg_inp></div><div class=lg_row>Nhập lại mật khẩu:<br><input type=password name=re_pass class=lg_inp></div><div class=lg_row>Email:<br><input type=email name=email class=lg_inp></div><div class=lg_row><div class='lg_reg_btn btn'>Đăng ký</div></div></div>");
 $(".lg_bm").css({top:$(".menu").outerHeight(),left:$(".login_box").offset().left-$(".lg_bm").outerWidth()+$(".login_box").outerWidth()});
 e.stopPropagation();
 });
@@ -188,7 +188,7 @@ e.stopPropagation();
 
 
 $(document).on("click",".lg_reg_btn",function(){
-$.post( "api/user/reg", { name: $(".lg_inp[name='user']").val(), pass: $(".lg_inp[name='pass']").val(), re_pass: $(".lg_inp[name='re_pass']").val() })
+$.post( "api/user/reg", { name: $(".lg_inp[name='user']").val(), pass: $(".lg_inp[name='pass']").val(), re_pass: $(".lg_inp[name='re_pass']").val(),email: $(".lg_inp[name='email']").val() })
   .done(function( data ) {
     var jsdata=JSON.parse(data);
     if(jsdata.sys=="false")

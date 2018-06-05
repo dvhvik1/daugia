@@ -36,6 +36,13 @@
     .prd_price,.prd_sl,.prd_name,.prd_img{
         display: block;
     }
+    .prd_delete,.prd_edit{
+        display: inline-block;
+        color: #08c;
+        text-decoration: none;
+        margin-right: 10px;
+        cursor: pointer;
+    }
 </style>
 
 <script type="text/javascript">
@@ -83,6 +90,7 @@ if(jsdata.sys=="false")
 }
 else
 {
+    $(".msg_tbl").remove();
     $(".prd_row[p_id='"+p_id+"']").remove();
 }
 });

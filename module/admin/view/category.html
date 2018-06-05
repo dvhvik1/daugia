@@ -22,11 +22,13 @@ Tên nhóm sản phẩm : <br><input type=text name="name" value="">
     margin-bottom: 10px;
     padding: 10px;
 }
-    .cate_delete{
+    .cate_delete,.cate_edit{
         cursor: pointer;
         color: #08c;
         float: right;
+        margin-left: 10px;
     }
+
 </style>
 
 <script type="text/javascript">
@@ -40,7 +42,7 @@ $.post( "/api/category/getlist", {})
     {
     	for (var i = jsdata.length - 1; i >= 0; i--) {
     		var cate=jsdata[i];
-    		html+="<div class='cate_row' cate_id="+cate.id+">"+cate.name+" <span class=cate_delete cate_id="+cate.id+">Xóa</span></div>";
+    		html+="<div class='cate_row' cate_id="+cate.id+"><span class=cate_name>"+cate.name+"</span> <span class=cate_edit cate_id="+cate.id+">Sữa</span> <span class=cate_delete cate_id="+cate.id+">Xóa</span></div>";
     	}
 
     }
@@ -48,6 +50,42 @@ $.post( "/api/category/getlist", {})
 });
 }
 loadcatelist();
+
+$(document).on("click",".cate_edit",function(){
+    $(".msg_tbl").remove();
+    var cate_id=$(this).attr("cate_id");
+$("body").append("<table class=msg_tbl><tr><td valign=middle align=center>"+
+    "<div class='msg_box HWCO'>"+
+    "<div class=msg_title>Đổi tên nhóm</div>"+
+    "<div class=msg_content><input type=text class='care_rename_input' cate_id='"+cate_id+"' value='"+$(".cate_row[cate_id='"+cate_id+"']").find(".cate_name").text()+"'></div>"+
+    "<div class=msg_footer><div class='rename_cate btn' cate_id='"+$(this).attr("cate_id")+"'>Đổi tên</div></div>"+
+    "</div>"+
+    "</td></tr></table>");
+});
+
+
+$(document).on("click",".rename_cate",function(){
+    var cate_id=$(this).attr("cate_id");
+$.post( "/api/category/edit", {id:cate_id,name:$(".care_rename_input[cate_id='"+cate_id+"']").val()})
+.done(function( data ) {
+var jsdata=JSON.parse(data);
+if(jsdata.sys=="false")
+{
+    alert(jsdata.err);
+}
+else
+{
+    $(".msg_tbl").remove();
+    loadcatelist();
+}
+});
+
+});
+
+
+
+
+
 
 
 
@@ -74,6 +112,7 @@ if(jsdata.sys=="false")
 }
 else
 {
+    $(".msg_tbl").remove();
     $(".cate_row[cate_id='"+cate_id+"']").remove();
 }
 });

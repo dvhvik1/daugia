@@ -38,13 +38,17 @@ var linksList = document.querySelectorAll('a[href]');
 
 
 
+$(document).on("click",".HWCO",function(e){
+    e.stopPropagation();
+    $(".HWCO").show();
+});
 
 
 
-
-$(document).on("click",".msg_tbl",function(){
+$(document).on("click",".msg_tbl",function(e){
 $(".msg_tbl").remove();
 });
+
 
 
 
