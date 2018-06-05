@@ -10,5 +10,5 @@
 * Thêm chức năng đăng ký
 * Xong phần đấu giá
 * Thêm một số api
-* ==========================UPDATE=================================
+* ==========================UPDATE H=================================
 * https://daugia-vikclass.herokuapp.com/
