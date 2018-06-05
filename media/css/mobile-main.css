@@ -10,7 +10,40 @@
       width: 100% !important;
       height: auto;
     }
-    .menu a{
+    .menu .m_child {
       font-size: 12px;
     }
+    .r_menu{padding-right: 10px }
+    .menu .logo {
+    color: white;
+    font-size: 20px;
+    float: left;
+}
+.r_menu{
+  padding-top:5px !important; 
+}
+}
+/* 768px */
+
+
+@media only screen and (max-width: 414px) {
+    .prd_item{
+      width: 50%;
+    }
+    .baritem{
+      width: 100%;
+      text-align: left;
+    }
+
+}
+
+@media only screen and (max-width: 375px) {
+   
+.menu .logo {
+    position: relative;
+    color: white;
+    font-size: 15px !important;
+    float: left;
+    top: 3px;
+}
 }
