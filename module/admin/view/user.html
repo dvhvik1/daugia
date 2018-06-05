@@ -1,0 +1,115 @@
+<div class=posttinbox>
+<input id=search type=search placeholder="Tìm kiếm" name="search" value=""><br><br>
+
+</div>
+<div id=userlist>
+	
+</div>
+<style type="text/css">
+.user_row:after{
+    display:block;
+    content: "";
+    clear: both;
+}
+.user_row{
+    border:1px solid #b6b6b6;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+    .user_delete,.user_edit{
+        cursor: pointer;
+        color: #08c;
+        float: right;
+        margin-left: 10px;
+    }
+
+</style>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+function loaduserlist(){
+$.post( "/api/user/getlist", {})
+  .done(function( data ) {
+  	var html="";
+    var jsdata=JSON.parse(data);
+    if(jsdata.length>0)
+    {
+    	for (var i = jsdata.length - 1; i >= 0; i--) {
+    		var user=jsdata[i];
+    		html+="<div class='user_row' user_id="+user.id+"><span class=user_name>"+user.name+"</span> | <span class=user_email>"+user.email+"</span> <span class=user_delete user_id="+user.id+">Xóa</span></div>";
+    	}
+
+    }
+    $("#userlist").html(html);
+});
+}
+loaduserlist();
+
+
+
+
+
+$(document).on("input","#search",function(){
+    $(".user_row").hide();
+    $(".user_row").each(function(){
+        var find=xoadau($("#search").val());
+        var check=xoadau(decodeURI($(this).find(".user_name").text()));
+        console.log(find,check,$(this).find(".user_name").text());
+        if(check.indexOf(find)>-1)
+        {
+$(this).show();
+        }
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+$(document).on("click",".user_delete",function(){
+    $(".msg_tbl").remove();
+$("body").append("<table class=msg_tbl><tr><td valign=middle align=center>"+
+    "<div class='msg_box HWCO'>"+
+    "<div class=msg_title>Thông báo</div>"+
+    "<div class=msg_content>Bạn muốn xóa tài khoản này?</div>"+
+    "<div class=msg_footer><div class='delete_user btn' user_id='"+$(this).attr("user_id")+"'>Xóa</div></div>"+
+    "</div>"+
+    "</td></tr></table>");
+});
+
+
+$(document).on("click",".delete_user",function(){
+    var user_id=$(this).attr("user_id");
+$.post( "/api/user/remove", {id:user_id})
+.done(function( data ) {
+var jsdata=JSON.parse(data);
+if(jsdata.sys=="false")
+{
+    alert("Không thể xóa");
+}
+else
+{
+    $(".msg_tbl").remove();
+    $(".user_row[user_id='"+user_id+"']").remove();
+}
+});
+
+});
+
+
+
+
+
+
+
+	});
+</script>

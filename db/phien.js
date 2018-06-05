@@ -45,7 +45,13 @@ phienSchema.pre('save', function(next) {
         }
     });
 });
-
+phienSchema.pre('remove', function (next) {
+    var project = this;
+    project.model('daugia').remove({ phien_id: project.id },function(err,doc){});
+    project.model('cart').remove({ phien_id: project.id },function(err,doc){});
+    
+    next();
+});
 
 
 var DB_phien = mongoose.model('phien', phienSchema);

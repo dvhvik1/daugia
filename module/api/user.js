@@ -1,3 +1,39 @@
+if(req.act=="getlist")
+{
+DB_user.find({ name: { $ne: "admin" }},{ pass: 0 },function(err,data){
+	if(data.length>0){
+	res.send(JSON.stringify(data));
+	}
+	else
+	{
+		res.send("[]");
+	}
+});
+}
+if(req.act=="remove" && req.session.isAdmin==1)
+{
+var id_remove=func.intval(req.body.id);
+if(id_remove>0){
+DB_user.find({ id: id_remove }, function(err,books) {
+    if (!err) {
+        books.forEach(function(book){
+           book.remove(function(err){
+              
+           });
+       });
+       res.send('{"sys":"true"}');
+    }
+    else {
+       res.send('{"sys":"false"}');
+    }
+});
+}
+else
+{
+    res.send('{"sys":"false"}');
+}
+}
+
 if(req.act=="login")
 {
 if(func.stringval(req.body.name)!=""){

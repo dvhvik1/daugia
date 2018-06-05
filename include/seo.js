@@ -1,4 +1,4 @@
-console.log("seo url:",req);
+
 req.urlmap=(req.originalUrl.split("?")[0]).split("/");
 req.module=req.urlmap[1];
 req.act=req.urlmap[2];

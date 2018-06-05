@@ -1,3 +1,4 @@
+
 if(req.act=="getlist")
 {
 DB_daugia.find({},function(err,data){

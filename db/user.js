@@ -46,6 +46,12 @@ userSchema.pre('save', function(next) {
     });
 });
 
-
+userSchema.pre('remove', function (next) {
+    var project = this;
+    project.model('daugia').remove({ u_id: project.id },function(err,doc){});
+    project.model('order').remove({ u_id: project.id },function(err,doc){});
+    project.model('cart').remove({ u_id: project.id },function(err,doc){});
+    next();
+});
 
 var DB_user = mongoose.model('user', userSchema);

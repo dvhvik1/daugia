@@ -1,3 +1,4 @@
+
 if(req.act=="getlist")
 {
 DB_cart.find({},function(err,data){
@@ -43,7 +44,7 @@ res.send('{"u_id":0,"count":0}');
 
 
 
-if(req.act=="remove")
+if(req.act=="remove" && func.intval(req.session.u_id)>0)
 {
 
 var id_remove=func.intval(req.body.id);
@@ -54,8 +55,13 @@ if(req.session.isAdmin=="admin")
 find={ id: id_remove };
 
 
-DB_cart.remove(find, function(err) {
+DB_cart.find(find, function(err,books) {
     if (!err) {
+    	books.forEach(function(book){
+           book.remove(function(err){
+              
+           });
+       });
        res.send('{"sys":"true"}');
     }
     else {

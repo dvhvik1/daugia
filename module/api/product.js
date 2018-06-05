@@ -16,8 +16,13 @@ if(req.act=="remove" && req.session.isAdmin==1)
 console.log("==========delete prd========");
 var id_remove=func.intval(req.body.id);
 if(id_remove>0){
-DB_product.remove({ id: id_remove }, function(err) {
+DB_product.find({ id: id_remove }, function(err,books) {
     if (!err) {
+        books.forEach(function(book){
+           book.remove(function(err){
+              
+           });
+       });
        res.send('{"sys":"true"}');
     }
     else {

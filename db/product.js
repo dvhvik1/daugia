@@ -72,6 +72,12 @@ productSchema.pre('save', function(next) {
     });
 });
 
-
+productSchema.pre('remove', function (next) {
+    var project = this;
+    project.model('phien').remove({ p_id: project.id },function(err,doc){});
+    project.model('cart').remove({ p_id: project.id },function(err,doc){});
+    
+    next();
+});
 
 var DB_product = mongoose.model('product', productSchema);
