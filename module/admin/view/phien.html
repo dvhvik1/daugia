@@ -23,6 +23,9 @@
 .phien_name{
     display: block;
 }
+.phien_delete{
+    display: none;
+}
 </style>
 
 <script type="text/javascript">
@@ -88,7 +91,7 @@ $(document).on("click",".phien_delete",function(){
 $("body").append("<table class=msg_tbl><tr><td valign=middle align=center>"+
     "<div class='msg_box HWCO'>"+
     "<div class=msg_title>Thông báo</div>"+
-    "<div class=msg_content>Bạn muốn xóa danh mục này?</div>"+
+    "<div class=msg_content>Bạn muốn xóa phiên này?</div>"+
     "<div class=msg_footer><div class='delete_phien btn' phien_id='"+$(this).attr("phien_id")+"'>Xóa</div></div>"+
     "</div>"+
     "</td></tr></table>");

@@ -211,7 +211,7 @@ $(document).on("click",".prd_inp_a",function(e){
 	var newp=parseFloat($(".prd_inp_i").attr("price"))+1000;
 	var newmp=parseFloat($(".prd_inp_i").attr("min_price"))+1000;
 	$(".prd_inp_i").attr("price",newp);
-	$(".prd_inp_i").html(newp);
+	$(".prd_inp_i").html(toVnd(newp));
 	e.preventDefault(); return false;
 });
 $(document).on("click",".prd_inp_d",function(e){
@@ -220,7 +220,7 @@ $(document).on("click",".prd_inp_d",function(e){
 	if(newp<newmp)
 		return false;
 	$(".prd_inp_i").attr("price",newp);
-	$(".prd_inp_i").html(newp);
+	$(".prd_inp_i").html(toVnd(newp));
 	e.preventDefault(); return false;
 });
 

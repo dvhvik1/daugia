@@ -3,7 +3,8 @@ menu='<div class=menu><a href="/admin">Admin</a><a href="/">HOME</a><a href="/ad
 HTML.main.menu=menu;
 if(req.session.isAdmin!=1)
 {
-	HTML.main.content="Vui lòng đăng nhập ở trang chủ với tài khoản admin";
+	HTML.main.content=fs.readFileSync("module/"+req.module+'/view/admin_login.html','utf-8')+'';
+
 	endMain(false,"ok");
 }
 else
