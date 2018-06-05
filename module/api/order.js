@@ -1,3 +1,32 @@
+if(req.act=="update_status" && req.session.isAdmin==1)
+{
+var id_remove=func.intval(req.body.id);
+var name=func.removeHtmlTag(func.removeSpcChar(func.stringval(req.body.name)));
+if(id_remove>0 && name!=""){
+DB_order.find({ id: id_remove },function(err,data){
+    if(!err)
+  if(data.length>0){
+DB_order.update({ id: id_remove },{status:name}, {multi:true}, function(err,doc) {
+  console.log("====update===",doc);
+    if (!err) {
+       res.send('{"sys":"true"}');
+    }
+    else {
+       res.send('{"sys":"false","err":"Tên bị trùng"}');
+    }
+});
+}
+  else
+  {
+    res.send('{"sys":"false","err":"Không tồn tại nhóm này"}');
+  }
+});
+}
+else
+{
+    res.send('{"sys":"false","err":"Tên không được để trống"}');
+}
+}
 
 if(req.act=="remove" && req.session.isAdmin==1)
 {
