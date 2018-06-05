@@ -1,4 +1,5 @@
-req.urlmap=req.originalUrl.split("/");
+console.log("seo url:",req);
+req.urlmap=(req.originalUrl.split("?")[0]).split("/");
 req.module=req.urlmap[1];
 req.act=req.urlmap[2];
 if(req.module=="" || typeof req.module== "undefined"){
@@ -13,9 +14,10 @@ if(typeof req.urlmap[1] !== 'undefined' && req.urlmap[1]!="")
 {
 DB_seo.find({seo_url:req.urlmap[1]},function(err,data){
 	var menu="";
+	if(!err)
 	if(data){
 req.originalUrl=req.originalUrl.replace(data.seo_url,data.url);
-req.urlmap=req.originalUrl.split("/");
+req.urlmap=(req.originalUrl.split("?")[0]).split("/");
 req.module=req.urlmap[1];
 req.act=req.urlmap[2];
 if(req.module=="" || typeof req.module== "undefined"){

@@ -1,0 +1,123 @@
+
+<div id=phienlist>
+	
+</div>
+<style type="text/css">
+.phien_row:after{
+    display:block;
+    content: "";
+    clear: both;
+}
+.phien_row{
+    border:1px solid #b6b6b6;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+    .phien_delete,.phien_edit{
+        cursor: pointer;
+        color: #08c;
+        float: right;
+        margin-left: 10px;
+    }
+.phien_name{
+    display: block;
+}
+</style>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+function loadphienlist(){
+$.post( "/api/phien/getlist", {})
+  .done(function( data ) {
+  	var html="";
+    var jsdata=JSON.parse(data);
+    if(jsdata.length>0)
+    {
+    	for (var i = jsdata.length - 1; i >= 0; i--) {
+    		var phien=jsdata[i];
+    		html+="<div class='phien_row' phien_id="+phien.id+"><span class=phien_name>Phiên : "+phien.id+"</span> <span class=phien_name>Tình trạng : "+(phien.run==1?"Đang chạy":"Đã hoàn tất")+"</span> <span class=phien_name>Giá cao nhất : "+toVnd(phien.price)+"</span> <span class=phien_name>ID người thắng cuộc : "+(phien.winner)+"</span> <span class=phien_delete phien_id="+phien.id+">Xóa</span></div>";
+    	}
+
+    }
+    $("#phienlist").html(html);
+});
+}
+loadphienlist();
+
+$(document).on("click",".phien_edit",function(){
+    $(".msg_tbl").remove();
+    var phien_id=$(this).attr("phien_id");
+$("body").append("<table class=msg_tbl><tr><td valign=middle align=center>"+
+    "<div class='msg_box HWCO'>"+
+    "<div class=msg_title>Đổi tên nhóm</div>"+
+    "<div class=msg_content><input type=text class='care_rename_input' phien_id='"+phien_id+"' value='"+$(".phien_row[phien_id='"+phien_id+"']").find(".phien_name").text()+"'></div>"+
+    "<div class=msg_footer><div class='rename_phien btn' phien_id='"+$(this).attr("phien_id")+"'>Đổi tên</div></div>"+
+    "</div>"+
+    "</td></tr></table>");
+});
+
+
+$(document).on("click",".rename_phien",function(){
+    var phien_id=$(this).attr("phien_id");
+$.post( "/api/phien/edit", {id:phien_id,name:$(".care_rename_input[phien_id='"+phien_id+"']").val()})
+.done(function( data ) {
+var jsdata=JSON.parse(data);
+if(jsdata.sys=="false")
+{
+    alert(jsdata.err);
+}
+else
+{
+    $(".msg_tbl").remove();
+    loadphienlist();
+}
+});
+
+});
+
+
+
+
+
+
+
+
+$(document).on("click",".phien_delete",function(){
+    $(".msg_tbl").remove();
+$("body").append("<table class=msg_tbl><tr><td valign=middle align=center>"+
+    "<div class='msg_box HWCO'>"+
+    "<div class=msg_title>Thông báo</div>"+
+    "<div class=msg_content>Bạn muốn xóa danh mục này?</div>"+
+    "<div class=msg_footer><div class='delete_phien btn' phien_id='"+$(this).attr("phien_id")+"'>Xóa</div></div>"+
+    "</div>"+
+    "</td></tr></table>");
+});
+
+
+$(document).on("click",".delete_phien",function(){
+    var phien_id=$(this).attr("phien_id");
+$.post( "/api/phien/remove", {id:phien_id})
+.done(function( data ) {
+var jsdata=JSON.parse(data);
+if(jsdata.sys=="false")
+{
+    alert("Không thể xóa");
+}
+else
+{
+    $(".msg_tbl").remove();
+    $(".phien_row[phien_id='"+phien_id+"']").remove();
+}
+});
+
+});
+
+
+
+
+
+
+
+	});
+</script>

@@ -5,6 +5,9 @@ var productSchema = mongoose.Schema({
     required:true,
     unique:true
   },
+  search: {
+    type:String
+  },
   category : [{
     id : Number
      }],

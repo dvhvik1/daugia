@@ -2,6 +2,7 @@
 
 * Mã nguồn Web không sử dụng template engine . mà tự replace nội dung khi xữ lý hoàn tất.
 * Với hệ cấu trúc tự hoàn thiện, có thể thay đổi tiêu đề, nội dung, sau khi đã load ví dụ bạn có thể thay đổi tiêu đề web, nội dung header, ở phần code trang chi tiết ở content. hay bạn có thể thay đổi nội dung content khi đang code ở footer.
+* Cấu trúc đơn giản ví dụ bạn muốn thay đổi giao diện trong product (chi tiết sản phẩm) thì có thể vào module/product/view/product.html, muốn thay đổi nội dung dữ liệu thì thay đổi trong module/product/product.js
 * ==========================UPDATE=================================
 * Đăng nhập (user : admin / pass : admin)
 * Admin quản lý thêm sản phẩm và nhóm sản phẩm http://localhost:3000/admin

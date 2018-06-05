@@ -69,7 +69,9 @@ socket.emit('view', { p_id: $(this).attr("p_id")});
 
   });
 function loadDGmain(p_id){
-$.post( "/api/product/getdaugia/"+p_id, {})
+    $.post( "/api/phien/getFormProduct/"+p_id, {})
+  .done(function( data ) {
+    $.post( "/api/product/getdaugia/"+p_id, {})
   .done(function( data ) {
     var jsdata=JSON.parse(data);
     console.log(data);
@@ -88,6 +90,8 @@ $(".prd_timecount[p_id='"+dtx.p_id+"']").attr("endtime",dtx.endtime);
     }
     }
   });
+  });
+
 }
 function setDGmain(dtx){
 $(".prd_c_price[p_id='"+dtx.p_id+"']").html(toVnd(dtx.price));

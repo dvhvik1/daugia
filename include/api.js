@@ -1,4 +1,4 @@
-req.urlmap=req.originalUrl.split("/");
+req.urlmap=(req.originalUrl.split("?")[0]).split("/");
 req.module=func.stringval(req.urlmap[2]);
 req.act=func.stringval(req.urlmap[3]);
 

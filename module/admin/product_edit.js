@@ -1,3 +1,4 @@
+
 HTML.main.content=fs.readFileSync('module/'+req.module+'/view/'+req.act+'.html')+'';
 var ndt={name:"",des:"",tag:"",html:"",img:"",catelist:"123"};
 var product=ndt;
@@ -9,7 +10,7 @@ var check={id:0};
 var productid=func.intval(req.urlmap[3]);
 if(productid>0)
 var check={id:productid};
-console.log("===check",check);
+
 DB_product.find(check,function(err,aproduct){
 	
 	if(aproduct.length>0){
@@ -30,6 +31,7 @@ if(req.body.doaction=="1"){
 ndt=req.body;
 ndt.catelist=catelist;
 product.name=func.removeHtmlTag(func.removeSpcChar(req.body.name));
+product.search=func.xoadau(product.name);
 product.des=func.removeHtmlTag(func.removeSpcChar(req.body.des));
 product.tag=func.removeHtmlTag(func.removeSpcChar(req.body.tag));
 product.html=func.safeHtml(req.body.html);
@@ -78,7 +80,7 @@ product.time=func.getTime();
 product.url=func.makeUrl(product.name);
 
 
-var productsave = new DB_product({ name: product.name,des:product.des,img:product.img,tag:product.tag,price:product.price,min_price:product.min_price,html:product.html,time:product.time,url:product.url,category:product.category,quantity:product.quantity });
+var productsave = new DB_product(product);
 productsave.save(function (err, aproduct) {
 console.log("aproduct:",aproduct);
 if(!err)
@@ -87,9 +89,6 @@ if(!err)
 	DB_product.update(check, phiendf, {multi:true},function(err,aphien){
 		if(!err)
 		{
-			console.log("tao phien : ",aphien);
-			phiens['phien_'+aphien.id]=setTimeout(function(){func.phien_process(aphien)},(aphien.endtime-aphien.time));
-     io.to("product_"+aproduct.id).emit("updatephien",{aphien});
 	}
 	else
 	{
@@ -128,7 +127,7 @@ product.time=func.getTime();
 product.url=func.makeUrl(product.name);
 var phiendf={ name: product.name,des:product.des,img:product.img,tag:product.tag,price:product.price,min_price:product.min_price,html:product.html,time:product.time,url:product.url,category:product.category,quantity:product.quantity };
 //var productsave = new DB_product({ name: product.name,des:product.des,img:product.img,tag:product.tag,price:product.price,min_price:product.min_price,html:product.html,time:product.time,url:product.url,category:product.category,quantity:product.quantity });
-DB_product.update(check, phiendf, {multi:true},function(err,aphien){
+DB_product.update(check, product, {multi:true},function(err,aphien){
 HTML.main.content=func.tmp("Đăng sản phẩm thành công !!<br>","msg.err",HTML.main.content);
 HTML.main.content=func.temp(HTML.main.content,ndt);
 endMain(false,"ok");

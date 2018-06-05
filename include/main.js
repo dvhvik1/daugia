@@ -20,6 +20,23 @@ else
 menu+="<span class='m_child login_box' ><i class='fa fa-user'></i> Đăng nhập</span></div>";
 menu+="</div></div>";
 HTML.main.menu=menu;
+
+
+
+DB_category.find({},function(err,category){
+	if(!err)
+	if(category.length>0){
+		var catelist="";
+		for (var i = 0; i < category.length; i++) {
+			catelist+="<a class=mgr_i href='/category/"+category[i].id+"'>"+category[i].name+"</a>";
+		}
+	HTML.main.category=catelist;
+	}
+	else
+	{
+	HTML.main.category="";
+	}
+
 console.log("run file:",'module/'+req.module+'/'+req.module+'.js');
 if (fs.existsSync('module/'+req.module+'/'+req.module+'.js')) {
 
@@ -30,4 +47,9 @@ else
 	console.log("nofile:",'module/'+req.module+'/'+req.module+'.js');
 	endMain(false,"ok");
 }
+
+
+
+});
+
 /*});*/

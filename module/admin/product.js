@@ -22,6 +22,7 @@ if(req.body.doaction=="1"){
 ndt=req.body;
 ndt.catelist=catelist;
 product.name=func.removeHtmlTag(func.removeSpcChar(req.body.name));
+product.search=func.xoadau(product.name);
 product.des=func.removeHtmlTag(func.removeSpcChar(req.body.des));
 product.tag=func.removeHtmlTag(func.removeSpcChar(req.body.tag));
 product.html=func.safeHtml(req.body.html);
@@ -82,7 +83,7 @@ var phiendf={p_id:aproduct.id,price:aproduct.min_price,time:func.getTime(),endti
 		{
 			console.log("tao phien : ",aphien);
 			phiens['phien_'+aphien.id]=setTimeout(function(){func.phien_process(aphien)},(aphien.endtime-aphien.time));
-     io.to("product_"+aproduct.id).emit("updatephien",{aphien});
+    
 	}
 	else
 	{

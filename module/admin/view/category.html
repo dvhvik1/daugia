@@ -1,4 +1,5 @@
 <div class=posttinbox>
+<input id=search type=search placeholder="Tìm kiếm" name="search" value=""><br><br>
 <form action="/admin/category" method="post" enctype="multipart/form-data">
 {{msg.err}}
 <input type=hidden name="doaction" value="1">
@@ -50,6 +51,28 @@ $.post( "/api/category/getlist", {})
 });
 }
 loadcatelist();
+
+
+
+
+
+$(document).on("input","#search",function(){
+    $(".cate_row").hide();
+    $(".cate_row").each(function(){
+        var find=xoadau($("#search").val());
+        var check=xoadau(decodeURI($(this).find(".cate_name").text()));
+        console.log(find,check,$(this).find(".cate_name").text());
+        if(check.indexOf(find)>-1)
+        {
+$(this).show();
+        }
+    });
+});
+
+
+
+
+
 
 $(document).on("click",".cate_edit",function(){
     $(".msg_tbl").remove();

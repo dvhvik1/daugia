@@ -1,4 +1,5 @@
-
+<input id=search type=search placeholder="Tìm kiếm" name="search" value=""><br>
+<br>
 <div id=loadproductlist>
 	
 </div>
@@ -65,7 +66,18 @@ $.post( "/api/product/getlist", {})
 }
 loadproductlist();
 
-
+$(document).on("input","#search",function(){
+    $(".prd_row").hide();
+    $(".prd_row").each(function(){
+        var find=xoadau($("#search").val());
+        var check=xoadau(decodeURI($(this).find(".prd_name").text()));
+        console.log(find,check,$(this).find(".prd_name").text());
+        if(check.indexOf(find)>-1)
+        {
+$(this).show();
+        }
+    });
+});
 
 $(document).on("click",".prd_delete",function(){
     $(".msg_tbl").remove();

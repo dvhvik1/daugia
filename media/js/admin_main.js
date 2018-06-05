@@ -20,7 +20,26 @@ function toHHMMSS(i) {
         if (seconds < 10) {seconds = "0"+seconds;}
         return hours+':'+minutes+':'+seconds;
 }
-
+function xoadau( alias )
+{
+    var str = alias;
+    str= str.toLowerCase(); 
+    str= str.replace(/à|à|á|á|ạ|ạ|ả|ả|ã|ã|â|â|ầ|ầ|ấ|ấ|ậ|ậ|ẩ|ẩ|ẫ|ẫ|ă|ă|ằ|ằ|ắ|ắ|ặ|ặ|ẳ|ẳ|ẵ|ẵ/g,"a"); 
+    str= str.replace(/è|è|é|é|ẹ|ẹ|ẻ|ẻ|ẽ|ẽ|ê|ê|ề|ề|ế|ế|ệ|ệ|ể|ể|ễ|ễ/g,"e"); 
+    str= str.replace(/ì|ì|í|í|ị|ị|ỉ|ỉ|ĩ|ĩ/g,"i"); 
+    str= str.replace(/ò|ò|ó|ó|ọ|ọ|ỏ|ỏ|õ|õ|ô|ô|ồ|ồ|ố|ố|ộ|ộ|ổ|ổ|ỗ|ỗ|ơ|ơ|ờ|ờ|ớ|ớ|ợ|ợ|ở|ở|ỡ|ỡ/g,"o"); 
+    str= str.replace(/ù|ù|ú|ú|ụ|ụ|ủ|ủ|ũ|ũ|ư|ư|ừ|ừ|ứ|ứ|ự|ự|ử|ử|ữ|ữ/g,"u"); 
+    str= str.replace(/ỳ|ỳ|ý|ý|ỵ|ỵ|ỷ|ỷ|ỹ|ỹ/g,"y"); 
+    str= str.replace(/đ/g,"d");
+    str= str.replace(/à|à|á|á|ạ|ạ|ả|ả|ã|ã|â|â|ầ|ầ|ấ|ấ|ậ|ậ|ẩ|ẩ|ẫ|ẫ|ă|ă|ằ|ằ|ắ|ắ|ặ|ặ|ẳ|ẳ|ẵ|ẵ/g,"a"); 
+    str= str.replace(/è|è|é|é|ẹ|ẹ|ẻ|ẻ|ẽ|ẽ|ê|ê|ề|ề|ế|ế|ệ|ệ|ể|ể|ễ|ễ/g,"e"); 
+    str= str.replace(/ì|ì|í|í|ị|ị|ỉ|ỉ|ĩ|ĩ/g,"i"); 
+    str= str.replace(/ò|ò|ó|ó|ọ|ọ|ỏ|ỏ|õ|õ|ô|ô|ồ|ồ|ố|ố|ộ|ộ|ổ|ổ|ỗ|ỗ|ơ|ơ|ờ|ờ|ớ|ớ|ợ|ợ|ở|ở|ỡ|ỡ/g,"o"); 
+    str= str.replace(/ù|ù|ú|ú|ụ|ụ|ủ|ủ|ũ|ũ|ư|ư|ừ|ừ|ứ|ứ|ự|ự|ử|ử|ữ|ữ/g,"u"); 
+    str= str.replace(/ỳ|ỳ|ý|ý|ỵ|ỵ|ỷ|ỷ|ỹ|ỹ/g,"y"); 
+    str= str.replace(/đ/g,"d");
+    return str;
+}
 $(document).ready(function(){
 var docURL = document.URL;
 var linksList = document.querySelectorAll('a[href]');
