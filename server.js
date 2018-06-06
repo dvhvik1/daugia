@@ -53,7 +53,7 @@ db.once('open', function() {
 DB_user.update({}, {onl: 0}, {multi: true}, function(err) {  });
 func.phien_process=function(phien){
 console.log("phien "+phien.id+" end");
-DB_phien.update({p_id:phien.p_id,timeend:{$gt:func.getTime()}}, {run: 0}, {multi: true}, function(err) {});
+DB_phien.update({p_id:phien.p_id,endtime:{$gt:func.getTime()}}, {run: 0}, {multi: true}, function(err) {});
 DB_product.find({id:phien.p_id}).exec(function(err,product){
   if(typeof product == "undefined")
 product=[];
