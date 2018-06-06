@@ -12,28 +12,7 @@ DB_phien.find({},function(err,data){
 });
 }
 
-if(req.act=="settime" )
-{
 
-DB_phien.update({}, {time:func.getTime(),endtime:(func.getTime()+60000),run:1}, {multi:true}, function(err, doc){
-    if (err) res.send('{"sys":"false"}');
-    else
-    res.send('{"sys":"true"}');
-});
-
-
-}
-if(req.act=="removeall" )
-{
-
-DB_phien.deleteMany({}, function(err, doc){
-    if (err) res.send('{"sys":"false"}');
-    else
-    res.send('{"sys":"true"}');
-});
-
-
-}
 if(req.act=="getFormProduct")
 {
 	//console.log(req.urlmap);
@@ -50,7 +29,7 @@ DB_phien.find({p_id:id},function(err,phien){
 	{
 		if(product[0].quantity>0)
 		{
-	var phiendf={p_id:product[0].id,price:product[0].min_price,time:func.getTime(),endtime:(func.getTime()+60000)};
+	var phiendf={p_id:product[0].id,price:product[0].min_price,time:func.getTime(),endtime:(func.getTime()+func.intval(product[0].timedaugia))};
 	var add_phien=DB_phien(phiendf);
 	add_phien.save(function(err,aphien){
 		if(!err)

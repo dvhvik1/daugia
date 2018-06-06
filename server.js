@@ -66,7 +66,7 @@ if(product[0].quantity>0 )
 DB_daugia.find({phien_id:phien.id}).exec(function(err,daugia){
   if(!err){
     if(daugia.length>0){
-      var phiendf={p_id:product[0].id,price:product[0].min_price,time:func.getTime(),endtime:(func.getTime()+60000)};
+      var phiendf={p_id:product[0].id,price:product[0].min_price,time:func.getTime(),endtime:(func.getTime()+func.intval(product[0].timedaugia))};
   var add_phien=DB_phien(phiendf);
   add_phien.save(function(err,aphien){
     if(!err)
@@ -107,11 +107,11 @@ var cartinfo={
    else
    {
     console.log("phien "+phien.id+" refes "+phien.p_id);
-    DB_phien.update({id:phien.id}, {run: 1,time:func.getTime(),endtime:(func.getTime()+60000)}, {multi: true}, function(err) {
+    DB_phien.update({id:phien.id}, {run: 1,time:func.getTime(),endtime:(func.getTime()+func.intval(product[0].timedaugia))}, {multi: true}, function(err) {
        clearTimeout(phiens['phien_'+phien.id]);
        phien.run=1;
        phien.time=func.getTime();
-       phien.endtime=func.getTime()+60000;
+       phien.endtime=func.getTime()+func.intval(product[0].timedaugia);
     phiens['phien_'+phien.id]=setTimeout(function(){func.phien_process(phien)},(phien.endtime-phien.time));
      io.to("product_"+product[0].id).emit("updatephien",phien);
     });
@@ -334,6 +334,9 @@ DB_phien.find({id:phien_id,p_id:p_id},function(err,phien){
   if(phien.length>0){
     
     if(func.intval(client.u_id)>0 && phien[0].endtime>func.getTime() && price>=(phien[0].price+1000) && phien[0].winner!=client.u_id){
+      if(phien[0].endtime>func.getTime()+60000)
+      var endtime=phien[0].endtime;
+        else
       var endtime=func.getTime()+60000;
       var time=func.getTime();
       console.log("DG",data,client.u_id,phien[0].price);
@@ -346,7 +349,7 @@ var newDG={
   time:time
 }
   var addDG=DB_daugia(newDG);
-  var update_phien={winner:client.u_id,price:price,time:time,endtime:(time+60000)};
+  var update_phien={winner:client.u_id,price:price,time:time,endtime:endtime};
   addDG.save(function(err,aphien){
     if(!err)
     {
@@ -391,7 +394,7 @@ client.emit("mes",{type:"",msg:"Bạn đang đạt giá cao nhất."});
   var roomlist=func.intval(client.roomList);
   for (index = 0; index < roomlist.length; index++) {
     var room = io.sockets.adapter.rooms[roomlist[index]];
-    if(typeof room != "undefined")
+if(typeof room != "undefined")
     io.to(roomlist[index]).emit("viewcount",{count:room.length});
 }
  });

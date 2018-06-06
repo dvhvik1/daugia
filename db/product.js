@@ -24,6 +24,10 @@ var productSchema = mongoose.Schema({
     html:{
     type:String
   },
+    timedaugia:{
+      type:Number,
+      default:60000
+    },
     min_price:{
       type:Number
     }

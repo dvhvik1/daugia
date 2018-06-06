@@ -39,6 +39,7 @@ product.price=func.intval(req.body.price);
 product.min_price=func.intval(req.body.min_price);
 product.category=[{id:func.intval(req.body.category)}];
 product.quantity=func.intval(req.body.quantity);
+product.timedaugia=func.intval(req.body.timedaugia);
 if(product.price==0)
 {
 errText+="Giá sản phẩm không được để trống<br>";
@@ -86,7 +87,7 @@ console.log("aproduct:",aproduct);
 if(!err)
 		{
 
-	DB_product.update(check, phiendf, {multi:true},function(err,aphien){
+	DB_product.update(check, product, {multi:true},function(err,aphien){
 		if(!err)
 		{
 	}
@@ -122,6 +123,7 @@ else
 	waitupload=true;
 console.log("ko file");
 product.img='media/product/noimg.jpg';
+delete product.img;
 product.tag=product.tag.split(",");
 product.time=func.getTime();
 product.url=func.makeUrl(product.name);
