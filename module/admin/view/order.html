@@ -1,5 +1,11 @@
 <div class="view_box">
 <div class="order_view">
+	<select name=search id=search>
+		<option value="Đang chuyển">Đang chuyển</option>
+		<option value="Đã hoàn tất">Đã hoàn tất</option>
+		<option value="Khách hàng hủy bỏ">Khách hàng hủy bỏ</option>
+	</select>
+	<br><br>
 <div class="order_content">
 {{order.html}}
 </div>
@@ -24,7 +30,7 @@
     display: inline-block;
     padding: 5px 10px;
 }
-.order_img,.order_name,.order_price,.order_read{
+.order_img,.order_name,.order_price,.order_read,.order_status{
 	display: inline-block;
 	vertical-align: middle;
 	padding: 10px;
@@ -37,6 +43,9 @@
 .order_img .prd_img{
 	width: 100px;
 	height: 100px;
+}
+.order_btnbox{
+	padding: 10px;
 }
 </style>
 <script type="text/javascript">
@@ -58,6 +67,61 @@ else
 });
 
 });
+
+
+
+$(document).on("click",".compl_ord",function(){
+    var ord_id=$(this).attr("ord_id");
+$.post( "/api/order/update_status", {id:ord_id,name:"Đã hoàn tất"})
+.done(function( data ) {
+var jsdata=JSON.parse(data);
+if(jsdata.sys=="false")
+{
+    alert("Không thể thay đổi");
+}
+else
+{
+    localtion.reload();
+}
+});
+
+});
+
+$(document).on("click",".cancel_ord",function(){
+    var ord_id=$(this).attr("ord_id");
+$.post( "/api/order/update_status", {id:ord_id,name:"Khách hàng hủy bỏ"})
+.done(function( data ) {
+var jsdata=JSON.parse(data);
+if(jsdata.sys=="false")
+{
+    alert("Không thể thay đổi");
+}
+else
+{
+    localtion.reload();
+}
+});
+
+});
+
+
+$(document).on("input change","#search",function(){
+    $(".order_row").hide();
+    $(".order_row").each(function(){
+        var find=xoadau($("#search").val());
+        console.log(find);
+        var check=xoadau(decodeURI($(this).find(".order_status").text()));
+        console.log(find,check,$(this).find(".order_status").text());
+        if(check.indexOf(find)>-1)
+        {
+$(this).show();
+        }
+    });
+});
+
+$("#search").trigger("change");
+
+
 
 });
 </script>

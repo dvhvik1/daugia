@@ -9,7 +9,16 @@ DB_order.find({ id: id_remove },function(err,data){
 DB_order.update({ id: id_remove },{status:name}, {multi:true}, function(err,doc) {
   console.log("====update===",doc);
     if (!err) {
-       res.send('{"sys":"true"}');
+
+if(name=="Khách hàng hủy bỏ")
+{
+  DB_user.update({ id: data[0].u_id },{$inc: { report: 1} }, {multi:true}, function(err,doc) {
+    
+  });
+}
+else
+res.send('{"sys":"true"}');
+
     }
     else {
        res.send('{"sys":"false","err":"Tên bị trùng"}');

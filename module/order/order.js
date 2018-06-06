@@ -21,6 +21,7 @@ html+="<div class=order_p_price>"+func.toVnd(norder.products[j].price)+"</div></
 }
 html+="<div class=order_ir>Địa chỉ giao hàng : "+(norder.address)+"</div>";
 html+="<div class=order_ir>Số điện thoại : "+(norder.phone)+"</div>";
+html+="<div class=order_ir>Tình trạng : "+(norder.status)+"</div>";
 html+="<div class=order_price>Tổng tiền : "+func.toVnd(norder.total_price)+"</div></div>";
     	}
     }

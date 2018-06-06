@@ -218,7 +218,10 @@ $.post( "api/user/login", { name: $(".lg_inp[name='user']").val(), pass: $(".lg_
     var jsdata=JSON.parse(data);
     if(jsdata.sys=="false")
     {
-        alert("Sai tên đăng nhập hoạc mật khẩu !");
+        if(jsdata.err=="pass")
+        alert("Sai tên đăng nhập hoặc mật khẩu !");
+    else
+        alert(jsdata.err);
     }
     else
     {

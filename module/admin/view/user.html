@@ -37,7 +37,7 @@ $.post( "/api/user/getlist", {})
     {
     	for (var i = jsdata.length - 1; i >= 0; i--) {
     		var user=jsdata[i];
-    		html+="<div class='user_row' user_id="+user.id+"><span class=user_name>"+user.name+"</span> | <span class=user_email>"+user.email+"</span> <span class=user_delete user_id="+user.id+">Xóa</span></div>";
+    		html+="<div class='user_row' user_id="+user.id+"><span class=user_name>"+user.name+"</span> | Email : <span class=user_email>"+user.email+"</span> | Lượt hủy đơn hàng : <span class=user_report>"+user.report+"</span> <span class=user_delete user_id="+user.id+">Xóa</span></div>";
     	}
 
     }

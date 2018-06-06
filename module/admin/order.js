@@ -22,7 +22,19 @@ html+="<div class=order_p_price>"+func.toVnd(norder.products[j].price)+"</div></
 }
 html+="<div class=order_ir>Địa chỉ giao hàng : "+(norder.address)+"</div>";
 html+="<div class=order_ir>Số điện thoại : "+(norder.phone)+"</div>";
-html+="<div class=order_price>Tổng tiền : "+func.toVnd(norder.total_price)+"</div><div class='delete_ord btn' ord_id="+(norder.id)+">Xóa</div></div>";
+html+="<div class=order_price>Tổng tiền : "+func.toVnd(norder.total_price)+"</div>";
+html+="<div class=order_status>Tình trạng : "+(norder.status)+"</div>";
+if(norder.status=="Đang chuyển")
+{
+html+="<div class=order_btnbox><div class='delete_ord btn' ord_id="+(norder.id)+">Xóa</div> ";
+html+="<div class='compl_ord btn' ord_id="+(norder.id)+">Đã hoàn tất</div> ";
+html+="<div class='cancel_ord btn' ord_id="+(norder.id)+">Khách hàng hủy bỏ</div></div>";
+}
+else
+{
+
+}
+html+="</div>";
     	}
     }
 	else

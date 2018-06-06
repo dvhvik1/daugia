@@ -15,7 +15,9 @@ menu="<div class=menu>"+
 "<div class=r_menu><a class='m_child m_cart' href='./cart'><i class='fa fa-shopping-cart'></i> Giỏ hàng</a>"+
 "<a class='m_child' href='./order'><i class='fa fa-gavel x_flip'></i> Đơn hàng của tôi</a>";
 if(func.intval(req.session.u_id)>0)
+{
 menu+="<span class='m_child logu_box' ><i class='fa fa-user'></i> "+func.stringval(req.session.u_name)+"</span></div>";
+}
 else
 menu+="<span class='m_child login_box' ><i class='fa fa-user'></i> Đăng nhập</span></div>";
 menu+="</div></div>";
@@ -36,6 +38,21 @@ DB_category.find({},function(err,category){
 	{
 	HTML.main.category="";
 	}
+if(func.intval(req.session.u_id)>0)
+{
+DB_user.find({ id: func.intval(req.session.u_id)},{ pass: 0 },function(err,data){
+	if(!err)
+	if(data.length>0){
+	if(data[0].report>=5){
+		req.session.u_id=0;
+		req.session.u_name="";
+		req.session.save();
+io.to("user_"+data[0].id).emit("mes",{type:"block",msg:"Bạn đã bị khóa tài khoản, vì có 5 đơn hàng bạn không nhận."});
+
+	}
+	}
+});
+}
 
 console.log("run file:",'module/'+req.module+'/'+req.module+'.js');
 if (fs.existsSync('module/'+req.module+'/'+req.module+'.js')) {

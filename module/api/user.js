@@ -41,11 +41,17 @@ var name=func.removeHtmlTag(func.removeSpcChar(func.stringval(req.body.name)));
 var pass=func.removeHtmlTag(func.removeSpcChar(func.stringval(req.body.pass)));
 DB_user.find({name:name,pass:pass},function(err,data){
 	if(data.length>0){
+		if(func.intval(data[0].report)<5){
 	req.session.u_id=data[0].id;
 	req.session.u_name=data[0].name;
 	req.session.isAdmin=1;
 	req.session.save();
 	res.send('{"sys":"true","u_id":'+data[0].id+'}');
+}
+else
+{
+	res.send('{"sys":"false","err":"Khóa tài khoản vì đã hủy hơn 5 đơn hàng"}');
+}
 	}
 	else
 	{
