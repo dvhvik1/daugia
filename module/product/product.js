@@ -17,11 +17,11 @@ DB_product.find(check,function(err,data){
 
 
 var product_list="";
-var find={"category.id":0,p_id:{$ne:ndt.id}};
+var find={"category.id":0,id:{$ne:ndt.id}};
 if(data[0].category.length>0)
  find={"category.id":data[0].category[0].id,id:{$ne:ndt.id}};
 console.log("find:",find);
-DB_product.find(check).limit(4).exec(function(err,data){
+DB_product.find(find).limit(4).exec(function(err,data){
 
 	if(data.length>0){
 		var product_box=fs.readFileSync('module/product/view/box.html','utf-8')+'';
