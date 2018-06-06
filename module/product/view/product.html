@@ -3,7 +3,7 @@
 <h1 class="p_title">{{product.name}}</h1>
 <div class="p_time">Ngày đăng : {{product.date}}</div>
 <div class="prd_group">
-<div class="prd_img">
+<div class="prd_img img_detail">
 	<img src="{{product.img}}">
 </div>
 <div class="prd_info">
@@ -53,13 +53,15 @@ Thời gian còn lại : <span class="prd_data prd_timecount" p_id={{product.i
 <div class="prd_content">
 {{product.html}}
 </div>
+<div class=prd_list_c_title>Sản phẩm cùng nhóm</div>
+<div class=prd_list_c>{{data.product_list}}</div>
 </div>
 </div>
 <style type="text/css">
 .product_view{
 	padding: 10px;
 }
-	.prd_img,.prd_info{
+	.img_detail,.prd_info{
 		width: 49%;
 		display: inline-block;
 		vertical-align: top;
@@ -75,10 +77,10 @@ Thời gian còn lại : <span class="prd_data prd_timecount" p_id={{product.i
 	height: 100%;
 	background: #fff;
 }
-	.prd_img{
+	.img_detail{
 		height: 300px;
 	}
-	.prd_img img{
+	.img_detail img{
 		width: auto;
 		height: 110%;
 	}
@@ -134,6 +136,12 @@ Thời gian còn lại : <span class="prd_data prd_timecount" p_id={{product.i
 		content: "";
 		display: block;
 		clear: both;
+	}
+	.prd_list_c_title{
+	padding: 5px;
+    background: #1ab7ea;
+    color: #fff;
+    margin:5px 0px;
 	}
 @media only screen and (max-width: 768px) {
 
