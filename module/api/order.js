@@ -13,7 +13,7 @@ DB_order.update({ id: id_remove },{status:name}, {multi:true}, function(err,doc)
 if(name=="Khách hàng hủy bỏ")
 {
   DB_user.update({ id: data[0].u_id },{$inc: { report: 1} }, {multi:true}, function(err,doc) {
-    
+    res.send('{"sys":"true"}');
   });
 }
 else
