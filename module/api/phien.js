@@ -1,7 +1,7 @@
 if(req.act=="removeall" && req.session.isAdmin==1)
 {
 
-DB_category.find({}, function(err,books) {
+DB_phien.find({}, function(err,books) {
     if (!err) {
     	books.forEach(function(book){
            book.remove(function(err){
