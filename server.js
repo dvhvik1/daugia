@@ -15,7 +15,7 @@ var func= new cfunc();
 var cHTML = require('./lib/HTML.js');
 var bodyParser = require('body-parser');
 var fileUpload = require('express-fileupload');
-
+dsadsa
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://daugia:123456@ds237770.mlab.com:37770/daugia', { useMongoClient: true });
@@ -71,7 +71,7 @@ DB_daugia.find({phien_id:phien.id}).exec(function(err,daugia){
   add_phien.save(function(err,aphien){
     if(!err)
     {
- console.log("phien "+phien.id+" new");
+ console.log("phien "+phien.id+" new "+(aphien.endtime-aphien.time));
     clearTimeout(phiens['phien_'+aphien.id]);
     phiens['phien_'+aphien.id]=setTimeout(function(){func.phien_process(aphien)},(aphien.endtime-aphien.time));
 var winnerDG=daugia[daugia.length-1];     
@@ -106,13 +106,16 @@ var cartinfo={
    }
    else
    {
-    console.log("phien "+phien.id+" refes "+phien.p_id);
-    DB_phien.update({id:phien.id}, {run: 1,time:func.getTime(),endtime:(func.getTime()+func.intval(product[0].timedaugia))}, {multi: true}, function(err) {
+    var nendtime=func.getTime()+func.intval(product[0].timedaugia);
+    console.log("phien "+phien.id+" refes ("+nendtime+") "+product[0].id+"-"+product[0].timedaugia+"-"+(nendtime-func.getTime()));
+    
+    DB_phien.update({id:phien.id}, {run: 1,time:func.getTime(),endtime:nendtime}, {multi: true}, function(err,doc) {
+       
        clearTimeout(phiens['phien_'+phien.id]);
        phien.run=1;
        phien.time=func.getTime();
-       phien.endtime=func.getTime()+func.intval(product[0].timedaugia);
-    phiens['phien_'+phien.id]=setTimeout(function(){func.phien_process(phien)},(phien.endtime-phien.time));
+       phien.endtime=nendtime;
+       phiens['phien_'+phien.id]=setTimeout(function(){func.phien_process(phien)},(nendtime-phien.time));
      io.to("product_"+product[0].id).emit("updatephien",phien);
     });
    }

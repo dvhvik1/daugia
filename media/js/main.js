@@ -74,7 +74,7 @@ socket.emit('view', { p_id: $(this).attr("p_id")});
   });
 function loadDGmain(p_id){
     $.post( "/api/phien/getFormProduct/"+p_id, {})
-  .done(function( data ) {
+  .done(function( data2 ) {
     $.post( "/api/product/getdaugia/"+p_id, {})
   .done(function( data ) {
     var jsdata=JSON.parse(data);
@@ -84,7 +84,7 @@ function loadDGmain(p_id){
 if(jsdata.length>0 && jsdata[0].phien_doc.run>0){
     var dtx=jsdata[0].phien_doc;
     serverTime=dtx.time;
-    console.log(".prd_c_price[p_id='"+dtx.p_id+"']");
+    console.log(".prd_c_price[p_id='"+dtx.p_id+"']",dtx.endtime);
 $(".prd_c_price[p_id='"+dtx.p_id+"']").html(toVnd(dtx.price));
 $(".prd_timecount[p_id='"+dtx.p_id+"']").attr("time",dtx.time);
 $(".prd_timecount[p_id='"+dtx.p_id+"']").attr("endtime",dtx.endtime);
