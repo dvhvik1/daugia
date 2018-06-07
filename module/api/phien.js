@@ -1,3 +1,21 @@
+if(req.act=="removeall" && req.session.isAdmin==1)
+{
+
+DB_category.find({}, function(err,books) {
+    if (!err) {
+    	books.forEach(function(book){
+           book.remove(function(err){
+              
+           });
+       });
+       res.send('{"sys":"true"}');
+    }
+    else {
+       res.send('{"sys":"false"}');
+    }
+});
+
+}
 
 if(req.act=="getlist")
 {
