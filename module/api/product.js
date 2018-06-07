@@ -69,6 +69,9 @@ DB_product.aggregate([{$match:match},{
         id: {
             $first: "$id"
         },
+        timedaugia: {
+            $first: "$timedaugia"
+        },
         phien_doc: {
             $first: "$phien_doc"
         },
@@ -81,13 +84,13 @@ DB_product.aggregate([{$match:match},{
     if(product.length>0){
         if(product[0].daugia_doc.length==0 && product[0].phien_doc.run==0)
         {
-           DB_phien.update({id:product[0].phien_doc.id}, {time:func.getTime(),endtime:(func.getTime()+60000),run:1}, {multi:true}, function(err, doc){
+           DB_phien.update({id:product[0].phien_doc.id}, {time:func.getTime(),endtime:(func.getTime()+product[0].timedaugia),run:1}, {multi:true}, function(err, doc){
         var aphien=product[0].phien_doc;
     clearTimeout(phiens['phien_'+aphien.id]);
     phiens['phien_'+aphien.id]=setTimeout(function(){func.phien_process(aphien)},(aphien.endtime-aphien.time));
 product[0].phien_doc.run=1;
 product[0].phien_doc.time=func.getTime();
-product[0].phien_doc.endtime=func.getTime()+60000;
+product[0].phien_doc.endtime=func.getTime()+product[0].timedaugia;
 res.send(JSON.stringify(product));
 });
         }

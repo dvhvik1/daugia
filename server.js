@@ -15,7 +15,7 @@ var func= new cfunc();
 var cHTML = require('./lib/HTML.js');
 var bodyParser = require('body-parser');
 var fileUpload = require('express-fileupload');
-dsadsa
+
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://daugia:123456@ds237770.mlab.com:37770/daugia', { useMongoClient: true });
@@ -51,6 +51,18 @@ db.once('open', function() {
   console.log("loaded DATA");
 
 DB_user.update({}, {onl: 0}, {multi: true}, function(err) {  });
+function grefes(phien,product){
+  var nendtime=func.getTime()+func.intval(product.timedaugia);
+    console.log("phien "+phien.id+" refes ("+nendtime+") "+product.id+"-"+product.timedaugia+"-"+(nendtime-func.getTime()));
+    DB_phien.update({id:phien.id}, {run: 1,time:func.getTime(),endtime:nendtime}, {multi: true}, function(err,doc) {
+   clearTimeout(phiens['phien_'+phien.id]);
+       phien.run=1;
+       phien.time=func.getTime();
+       phien.endtime=nendtime;
+       phiens['phien_'+phien.id]=setTimeout(function(){func.phien_process(phien)},(nendtime-phien.time));
+     io.to("product_"+product.id).emit("updatephien",phien);
+    });
+}
 func.phien_process=function(phien){
 console.log("phien "+phien.id+" end");
 DB_phien.update({p_id:phien.p_id,endtime:{$gte:func.getTime()}}, {run: 0}, {multi: true}, function(err) {});
@@ -106,18 +118,7 @@ var cartinfo={
    }
    else
    {
-    var nendtime=func.getTime()+func.intval(product[0].timedaugia);
-    console.log("phien "+phien.id+" refes ("+nendtime+") "+product[0].id+"-"+product[0].timedaugia+"-"+(nendtime-func.getTime()));
-    
-    DB_phien.update({id:phien.id}, {run: 1,time:func.getTime(),endtime:nendtime}, {multi: true}, function(err,doc) {
-       
-       clearTimeout(phiens['phien_'+phien.id]);
-       phien.run=1;
-       phien.time=func.getTime();
-       phien.endtime=nendtime;
-       phiens['phien_'+phien.id]=setTimeout(function(){func.phien_process(phien)},(nendtime-phien.time));
-     io.to("product_"+product[0].id).emit("updatephien",phien);
-    });
+    grefes(phien,product[0]);
    }
  }
   });

@@ -18,6 +18,12 @@ body{
     display: inline-block;
     text-align: center;
   }
+  a.lg_row{
+    padding: 5px 10px;
+    width: 100%;
+    display: block;
+    color: #08c;
+  }
 .lg_bm{
   width: 300px;
   height: auto;

@@ -262,9 +262,18 @@ $(".prd_timecount").each(function(){
 
 
 
-
-
-
+$(document).on("click mouseenter",".phiendaugia",function(){
+$(".PDG").remove();
+$("body").append("<div class='lg_bm PDG HWCO'><a class=lg_row href='phien/60000'>Kết thúc ngay</a><a class=lg_row href='phien/1800000'>Kết thúc trong 30 phút</a><a class=lg_row href='phien/3600000'>Kết thúc trong 1 tiếng</a><a class=lg_row href='phien/86400000'>Kết thúc trong 1 ngày</a></div>");
+$(".PDG").css({top:$(this).offset().top+$(this).outerHeight()-1,left:$(this).offset().left});
+e.stopPropagation();
+});
+$(document).on("mouseenter",".PDG",function(){
+    $(".PDG").show();
+});
+$(document).on("mouseleave",".phiendaugia,.PDG",function(){
+    $(".PDG").hide();
+});
 
 
 
